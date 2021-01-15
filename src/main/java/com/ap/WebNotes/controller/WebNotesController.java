@@ -1,4 +1,4 @@
-package controller;
+package com.ap.WebNotes.controller;
 
 
 import org.springframework.stereotype.Controller;
