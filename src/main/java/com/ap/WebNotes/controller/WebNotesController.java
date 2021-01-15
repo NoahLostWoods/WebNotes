@@ -50,14 +50,11 @@ public class WebNotesController extends UtilsClass {
             return ResponseEntity.ok("OK");
         }
 
-        try {
-            logger.info("Inizio chiamata servizio deleteNota");
-            noteService.delete(new Nota().setId(id));
-            return ResponseEntity.ok("OK");
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.ok("KO");
-        }
+
+        logger.info("Inizio chiamata servizio deleteNota");
+        noteService.delete(new Nota().setId(id));
+        return ResponseEntity.ok("OK");
+
     }
 
 
