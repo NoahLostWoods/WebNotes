@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>INDEX PAGE</title>
 </head>
 <body>
-Hello world!
+<div>Hello world!</div>
+<ul>
+    <li th:each="nota: ${listaNote}">
+        <a th:text="${nota.id}">id</a>
+        <b th:text="${nota.titolo}">Titolo nota</b>
+        <p th:text="${nota.contenuto}">Contenuto</p>
+    </li>
+</ul>
 </body>
 </html>
