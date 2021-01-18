@@ -5,38 +5,34 @@ import com.ap.WebNotes.model.Nota;
 import com.ap.WebNotes.service.implementations.NoteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import utils.UtilsClass;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class WebNotesController extends UtilsClass {
 
     @Autowired
     private NoteServiceImpl noteService;
 
     @GetMapping("/notes")
-    public ModelAndView getNota(
+    public ResponseEntity<ModelAndView> getNota(
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
 
         if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio home mock -> {}", mock);
             mav.setViewName("mockPage");
-            return mav;
+            return ResponseEntity.ok(mav);
         }
 
         logger.info("Inizio chiamata al servizio home");
         mav.setViewName("index");
         List<Nota> listaNote = noteService.getAll();
         mav.addObject("listaNote", listaNote);
-        return mav;
+        return ResponseEntity.ok(mav);
     }
 
 
