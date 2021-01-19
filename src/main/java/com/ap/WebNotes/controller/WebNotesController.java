@@ -3,7 +3,7 @@ package com.ap.WebNotes.controller;
 
 import com.ap.WebNotes.model.Nota;
 import com.ap.WebNotes.service.implementations.NoteServiceImpl;
-import com.ap.WebNotes.utils.enums.CodAzione;
+import com.ap.WebNotes.utils.enums.CodAzioneEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +43,7 @@ public class WebNotesController extends UtilsClass {
 
     @RequestMapping(value = "/inserisci/notes", method = RequestMethod.POST)
     public ModelAndView postNota(
-            @RequestParam("codAzione") CodAzione codAzione,
+            @RequestParam("codAzione") CodAzioneEnum codAzione,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock,
             @Validated Nota nota,
             BindingResult bindingResult
