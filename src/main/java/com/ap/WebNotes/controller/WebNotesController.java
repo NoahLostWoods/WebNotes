@@ -61,23 +61,4 @@ public class WebNotesController extends UtilsClass {
         return mav;
     }
 
-
-    @DeleteMapping("/delete/{id}/notes")
-    public ResponseEntity<String> deleteNota(
-            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock,
-            @PathVariable(value = "id", required = false) Integer id
-    ) {
-        if (Boolean.TRUE.equals(mock)) {
-            logger.info("Fine chiamata servizio deleteNota. MOCK -> {}", mock);
-            return ResponseEntity.ok("OK");
-        }
-
-
-        logger.info("Inizio chiamata servizio deleteNota");
-        noteService.delete(new Nota().setId(id));
-        return ResponseEntity.ok("OK");
-
-    }
-
-
 }
