@@ -25,8 +25,4 @@ public class NoteServiceImpl implements NoteServiceInterface {
         return noteRepos.findAll();
     }
 
-    @Override
-    public void delete(Nota nota) {
-        noteRepos.delete(nota);
-    }
 }
