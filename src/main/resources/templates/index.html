@@ -6,13 +6,15 @@
 </head>
 <body>
 <center>
+    <div>INSERIMENTO NOTA</div><br>
     <form action="#" method="POST" th:action="@{/web-notes/inserisci/notes?codAzione=INSERISCI}" th:object="${nota}">
         <input type="text" th:field="*{titolo}" placeholder="titolo"/>
         <input type="text" th:field="*{contenuto}" placeholder="contenuto"/>
         <input type="submit" value="Salva"/>
 
     </form>
-
+<br><br>
+    <div>NOTE INSERITE</div><br>
     <ul>
         <li th:each="nota: ${listaNote}">
             <a th:text="${nota.id}">id</a>
