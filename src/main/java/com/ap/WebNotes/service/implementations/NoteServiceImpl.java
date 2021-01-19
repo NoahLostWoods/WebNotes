@@ -21,7 +21,17 @@ public class NoteServiceImpl implements NoteServiceInterface {
     }
 
     @Override
+    public void update(Nota nota) {
+
+    }
+
+    @Override
     public List<Nota> getAll() {
         return noteRepos.findAll();
+    }
+
+    @Override
+    public Nota findById(Integer notaId) {
+        return null;
     }
 }
