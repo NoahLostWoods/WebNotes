@@ -52,7 +52,6 @@ public class WebNotesController extends UtilsClass {
             logger.info("Fine chiamata servizio postNota, mock -> {}", mock);
         }
         logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
-        ModelAndView mav = new ModelAndView();
         noteService.saveNota(nota);
         List<Nota> listaNote = noteService.getAll();
         mav.addObject("listaNote", listaNote);
