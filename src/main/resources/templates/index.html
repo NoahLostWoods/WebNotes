@@ -6,6 +6,16 @@
 </head>
 <body>
 <div>Hello world!</div>
+
+<center>
+    <form action="#" method="POST" th:action="@{/web-notes/inserisci/notes?codAzione=INSERISCI}" th:object="${nota}">
+        <input type="text" th:field="*{titolo}" placeholder="titolo" />
+        <input type="text" th:field="*{contenuto}" placeholder="contenuto" />
+        <input type="submit" value="Salva" />
+
+    </form>
+</center>
+
 <ul>
     <li th:each="nota: ${listaNote}">
         <a th:text="${nota.id}">id</a>
