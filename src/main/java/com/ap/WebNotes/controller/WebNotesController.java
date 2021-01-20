@@ -4,6 +4,7 @@ package com.ap.WebNotes.controller;
 import com.ap.WebNotes.model.Nota;
 import com.ap.WebNotes.service.implementations.NoteServiceImpl;
 import com.ap.WebNotes.utils.enums.CodAzioneEnum;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,7 @@ public class WebNotesController extends UtilsClass {
     @Autowired
     private NoteServiceImpl noteService;
 
+    @ApiOperation("Api che restituisce una lista di note")
     @GetMapping("/notes")
     public ModelAndView getNota(
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
@@ -40,6 +42,7 @@ public class WebNotesController extends UtilsClass {
         return mav;
     }
 
+    @ApiOperation("Api che permette di inserire una nota")
     @RequestMapping(value = "/inserisci/notes", method = RequestMethod.POST)
     public ModelAndView postNota(
             @RequestParam("codAzione") CodAzioneEnum codAzione,
@@ -57,6 +60,29 @@ public class WebNotesController extends UtilsClass {
         mav.addObject("nota", new Nota());
         mav.setViewName("index");
         return mav;
+    }
+
+    @ApiOperation("Api che permette di ricercare una nota per ID")
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public ModelAndView update(
+            @PathVariable("id") Integer id
+    ){
+        mav.addObject("nota", noteService.findById(id));
+        mav.setViewName("edit_nota");
+        return mav;
+    }
+
+    @ApiOperation("Api che permette di modificare una determinata nota")
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public ModelAndView doUpdate(
+            @Validated Nota nota,
+            BindingResult bindingResult
+    ){
+        noteService.saveNota(nota);
+        mav.setViewName("redirect:/web-notes/notes");
+
+        return mav;
+
     }
 
 }
