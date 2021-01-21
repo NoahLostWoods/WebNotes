@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import utils.UtilsClass;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "/web-notes", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,6 +38,7 @@ public class WebNotesController extends UtilsClass {
         logger.info("Inizio chiamata al servizio home");
         mav.setViewName("index");
         List<Nota> listaNote = noteService.getAll();
+
         mav.addObject("listaNote", listaNote);
         mav.addObject("nota", new Nota());
         return mav;
@@ -54,34 +56,52 @@ public class WebNotesController extends UtilsClass {
             logger.info("Fine chiamata servizio postNota, mock -> {}", mock);
         }
         logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
-        noteService.saveNota(nota);
-        List<Nota> listaNote = noteService.getAll();
-        mav.addObject("listaNote", listaNote);
-        mav.addObject("nota", new Nota());
-        mav.setViewName("index");
-        return mav;
+        if (!nota.getContenuto().isEmpty() &&
+                !nota.getTitolo().isEmpty()) {
+            noteService.saveNota(nota);
+            List<Nota> listaNote = noteService.getAll();
+            if (!listaNote.isEmpty()) {
+                mav.addObject("listaNote", listaNote);
+                mav.addObject("nota", new Nota());
+                mav.setViewName("index");
+                return mav;
+            } else {
+                return null;
+            }
+        } else {
+            return mav;
+        }
     }
 
     @ApiOperation("Api che permette di ricercare una nota per ID")
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public ModelAndView update(
             @PathVariable("id") Integer id
-    ){
-        mav.addObject("nota", noteService.findById(id));
-        mav.setViewName("edit_nota");
-        return mav;
+    ) {
+        if (id != null) {
+            mav.addObject("nota", noteService.findById(id));
+            mav.setViewName("edit_nota");
+            return mav;
+        } else {
+            return null;
+        }
     }
+
 
     @ApiOperation("Api che permette di modificare una determinata nota")
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView doUpdate(
             @Validated Nota nota,
             BindingResult bindingResult
-    ){
-        noteService.saveNota(nota);
-        mav.setViewName("redirect:/web-notes/notes");
+    ) {
 
-        return mav;
+        if (nota != null) {
+            noteService.saveNota(nota);
+            mav.setViewName("redirect:/web-notes/notes");
+            return mav;
+        } else {
+            return null;
+        }
 
     }
 

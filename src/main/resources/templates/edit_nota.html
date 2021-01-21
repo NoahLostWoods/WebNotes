@@ -7,7 +7,7 @@
 <body>
 <center>
     <div>MODIFICA NOTA</div><br>
-    <form action="#" method="POST" th:action="@{/web-notes/edit}" th:object="${nota}">
+    <form action="#" method="POST" th:action="@{/web-notes/edit/{id}}" th:object="${nota}">
         <input type="hidden" th:field="*{id}" />
         <input type="text" th:field="*{titolo}" placeholder="titolo"/>
         <input type="text" th:field="*{contenuto}" placeholder="contenuto"/>
