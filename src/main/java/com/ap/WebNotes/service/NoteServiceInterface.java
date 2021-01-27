@@ -9,4 +9,5 @@ public interface NoteServiceInterface {
     void saveNota(Nota nota);
     List<Nota> getAll();
     Optional<Nota> findById(Integer id);
+    void delete(Integer id);
 }

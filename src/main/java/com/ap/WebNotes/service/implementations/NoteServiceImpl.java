@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service("noteService")
+@Service
 public class NoteServiceImpl implements NoteServiceInterface {
 
     @Autowired
@@ -28,6 +28,11 @@ public class NoteServiceImpl implements NoteServiceInterface {
     @Override
     public Optional<Nota> findById(Integer id) {
         return noteRepos.findById(id);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        noteRepos.deleteById(id);
     }
 
 }

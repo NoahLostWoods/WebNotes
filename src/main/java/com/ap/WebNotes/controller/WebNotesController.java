@@ -7,14 +7,13 @@ import com.ap.WebNotes.utils.enums.CodAzioneEnum;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import utils.UtilsClass;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/web-notes", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,84 +24,99 @@ public class WebNotesController extends UtilsClass {
 
     @ApiOperation("Api che restituisce una lista di note")
     @GetMapping("/notes")
-    public ModelAndView getNota(
+    public ResponseEntity<List<Nota>> getNote(
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
 
         if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio home mock -> {}", mock);
-            mav.setViewName("mockPage");
-            return mav;
+            //SETTING MOCK TO DO
+            return ResponseEntity.ok(Arrays.asList(new Nota()));
         }
-
         logger.info("Inizio chiamata al servizio home");
-        mav.setViewName("index");
         List<Nota> listaNote = noteService.getAll();
-
-        mav.addObject("listaNote", listaNote);
-        mav.addObject("nota", new Nota());
-        return mav;
+        return ResponseEntity.ok(listaNote);
     }
 
     @ApiOperation("Api che permette di inserire una nota")
-    @RequestMapping(value = "/inserisci/notes", method = RequestMethod.POST)
-    public ModelAndView postNota(
+    @PostMapping("/inserisci/notes")
+    public ResponseEntity<String> postNota(
             @RequestParam("codAzione") CodAzioneEnum codAzione,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock,
-            @Validated Nota nota,
-            BindingResult bindingResult
+            @RequestBody Nota nota
     ) {
         if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio postNota, mock -> {}", mock);
         }
+        String message = null;
         logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
         if (!nota.getContenuto().isEmpty() &&
                 !nota.getTitolo().isEmpty()) {
             noteService.saveNota(nota);
             List<Nota> listaNote = noteService.getAll();
             if (!listaNote.isEmpty()) {
-                mav.addObject("listaNote", listaNote);
-                mav.addObject("nota", new Nota());
-                mav.setViewName("index");
-                return mav;
+                message = "OK";
+                return ResponseEntity.ok(message);
             } else {
-                return null;
+                message = "KO";
+                return ResponseEntity.ok(message);
             }
         } else {
-            return mav;
+            message = "KO";
+            return ResponseEntity.ok(message);
         }
     }
 
     @ApiOperation("Api che permette di ricercare una nota per ID")
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView update(
+    @GetMapping("/nota/{id}")
+    public ResponseEntity<Nota> getNota(
             @PathVariable("id") Integer id
     ) {
         if (id != null) {
-            mav.addObject("nota", noteService.findById(id));
-            mav.setViewName("edit_nota");
-            return mav;
-        } else {
-            return null;
+            Optional<Nota> notaResult = noteService.findById(id);
+            return ResponseEntity.ok(notaResult.get());
         }
+        return ResponseEntity.ok(new Nota());
     }
 
 
     @ApiOperation("Api che permette di modificare una determinata nota")
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public ModelAndView doUpdate(
-            @Validated Nota nota,
-            BindingResult bindingResult
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<String> doUpdate(
+            @RequestBody Nota nota,
+            @PathVariable("id") Integer id
     ) {
-
-        if (nota != null) {
+        String message = null;
+        if (id != null &&
+                noteService.findById(id).isPresent() &&
+                nota != null) {
             noteService.saveNota(nota);
-            mav.setViewName("redirect:/web-notes/notes");
-            return mav;
+            message = "OK";
+            return ResponseEntity.ok(message);
         } else {
-            return null;
+            message = "KO";
+            return ResponseEntity.ok(message);
         }
 
     }
 
+    @ApiOperation("Api che permette di eliminate una determinata nota")
+    @DeleteMapping("/nota/{id}")
+    public ResponseEntity<String> delete(
+            @PathVariable("id") Integer id
+    ) {
+        String message = null;
+        if (id != null) {
+            Optional<Nota> foundId = noteService.findById(id);
+            if (foundId.isPresent()) {
+                noteService.delete(id);
+                message = "OK";
+            } else {
+                message = "KO";
+            }
+            return ResponseEntity.ok(message);
+        }
+        message = "ID is null";
+        return ResponseEntity.ok(message);
+    }
 }

@@ -8,7 +8,4 @@ public class UtilsClass {
 
     // ==LOGGER==
     public Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    // ==MODELANDVIEW==
-    public ModelAndView mav = new ModelAndView();
 }
