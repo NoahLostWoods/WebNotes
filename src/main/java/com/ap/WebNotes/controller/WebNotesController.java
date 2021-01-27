@@ -1,6 +1,7 @@
 package com.ap.WebNotes.controller;
 
 
+import com.ap.WebNotes.model.IDs;
 import com.ap.WebNotes.model.Nota;
 import com.ap.WebNotes.service.implementations.NoteServiceImpl;
 import com.ap.WebNotes.utils.enums.CodAzioneEnum;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utils.UtilsClass;
 
+import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -118,5 +120,19 @@ public class WebNotesController extends UtilsClass {
         }
         message = "ID is null";
         return ResponseEntity.ok(message);
+    }
+
+    @DeleteMapping("/delete/notes")
+    public ResponseEntity<String> deleteNotes(
+            @RequestBody IDs dto
+    ) {
+        if (dto != null) {
+            for (Integer id : dto.getListIds()) {
+                noteService.delete(id);
+            }
+        }else {
+            return ResponseEntity.ok("KO");
+        }
+        return  ResponseEntity.ok("OK");
     }
 }
