@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utils.UtilsClass;
 
-import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +40,7 @@ public class WebNotesController extends UtilsClass {
     }
 
     @ApiOperation("Api che permette di inserire una nota")
-    @PostMapping("/inserisci/notes")
+    @PostMapping("/notes")
     public ResponseEntity<String> postNota(
             @RequestParam("codAzione") CodAzioneEnum codAzione,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock,
@@ -70,10 +69,14 @@ public class WebNotesController extends UtilsClass {
     }
 
     @ApiOperation("Api che permette di ricercare una nota per ID")
-    @GetMapping("/nota/{id}")
+    @GetMapping("/notes/{id}")
     public ResponseEntity<Nota> getNota(
-            @PathVariable("id") Integer id
+            @PathVariable("id") Integer id,
+            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
+        if (Boolean.TRUE.equals(mock))
+            logger.info("Fine chiamata servizio getNota mock -> {}", mock);
+        logger.info("Inizio chiamata servizio getNota");
         if (id != null) {
             Optional<Nota> notaResult = noteService.findById(id);
             return ResponseEntity.ok(notaResult.get());
@@ -83,11 +86,16 @@ public class WebNotesController extends UtilsClass {
 
 
     @ApiOperation("Api che permette di modificare una determinata nota")
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<String> doUpdate(
+    @PutMapping("/notes/{id}")
+    public ResponseEntity<String> putNote(
             @RequestBody Nota nota,
-            @PathVariable("id") Integer id
+            @PathVariable("id") Integer id,
+            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
+        if (Boolean.TRUE.equals(mock))
+            logger.info("Fine chiamata servizio putNote mock -> {}", mock);
+
+        logger.info("Inizio chiamata servizio putNote");
         String message = null;
         if (id != null &&
                 noteService.findById(id).isPresent() &&
@@ -103,10 +111,15 @@ public class WebNotesController extends UtilsClass {
     }
 
     @ApiOperation("Api che permette di eliminate una determinata nota")
-    @DeleteMapping("/nota/{id}")
-    public ResponseEntity<String> delete(
-            @PathVariable("id") Integer id
+    @DeleteMapping("/notes/{id}")
+    public ResponseEntity<String> deleteNota(
+            @PathVariable("id") Integer id,
+            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
+        if (Boolean.TRUE.equals(mock))
+            logger.info("Fine chiamata servizio deleteNota mock -> {}", mock);
+
+        logger.info("Inizio chiamata servizio deleteNota");
         String message = null;
         if (id != null) {
             Optional<Nota> foundId = noteService.findById(id);
@@ -122,17 +135,23 @@ public class WebNotesController extends UtilsClass {
         return ResponseEntity.ok(message);
     }
 
-    @DeleteMapping("/delete/notes")
+    @ApiOperation("Api che permette di eliminare n note")
+    @DeleteMapping("/notes")
     public ResponseEntity<String> deleteNotes(
-            @RequestBody IDs dto
+            @RequestBody IDs dto,
+            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
+        if (Boolean.TRUE.equals(mock))
+            logger.info("Fine chiamata servizio deleteNotes mock -> {}", mock);
+
+        logger.info("Inizio chiamata al servizio deleteNotes");
         if (dto != null) {
             for (Integer id : dto.getListIds()) {
                 noteService.delete(id);
             }
-        }else {
+        } else {
             return ResponseEntity.ok("KO");
         }
-        return  ResponseEntity.ok("OK");
+        return ResponseEntity.ok("OK");
     }
 }
