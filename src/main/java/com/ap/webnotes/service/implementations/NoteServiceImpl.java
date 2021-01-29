@@ -1,8 +1,8 @@
-package com.ap.WebNotes.service.implementations;
+package com.ap.webnotes.service.implementations;
 
-import com.ap.WebNotes.model.Nota;
-import com.ap.WebNotes.repository.NoteRepositoryInterface;
-import com.ap.WebNotes.service.NoteServiceInterface;
+import com.ap.webnotes.model.Nota;
+import com.ap.webnotes.repository.NoteRepositoryInterface;
+import com.ap.webnotes.service.NoteServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

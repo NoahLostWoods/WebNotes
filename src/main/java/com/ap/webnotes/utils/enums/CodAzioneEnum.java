@@ -1,4 +1,4 @@
-package com.ap.WebNotes.utils.enums;
+package com.ap.webnotes.utils.enums;
 
 public enum CodAzioneEnum {
 

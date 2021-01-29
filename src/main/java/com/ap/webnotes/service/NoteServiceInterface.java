@@ -1,6 +1,6 @@
-package com.ap.WebNotes.service;
+package com.ap.webnotes.service;
 
-import com.ap.WebNotes.model.Nota;
+import com.ap.webnotes.model.Nota;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,11 +1,11 @@
-package com.ap.WebNotes.controller;
+package com.ap.webnotes.controller;
 
 
-import com.ap.WebNotes.dto.NotaDto;
-import com.ap.WebNotes.model.IDs;
-import com.ap.WebNotes.model.Nota;
-import com.ap.WebNotes.service.implementations.NoteServiceImpl;
-import com.ap.WebNotes.utils.enums.CodAzioneEnum;
+import com.ap.webnotes.dto.NotaDto;
+import com.ap.webnotes.model.IDs;
+import com.ap.webnotes.model.Nota;
+import com.ap.webnotes.service.implementations.NoteServiceImpl;
+import com.ap.webnotes.utils.enums.CodAzioneEnum;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

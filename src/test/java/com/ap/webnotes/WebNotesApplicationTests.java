@@ -1,4 +1,4 @@
-package com.ap.WebNotes;
+package com.ap.webnotes;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

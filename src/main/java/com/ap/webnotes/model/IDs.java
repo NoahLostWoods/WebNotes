@@ -1,4 +1,4 @@
-package com.ap.WebNotes.model;
+package com.ap.webnotes.model;
 
 import java.util.List;
 

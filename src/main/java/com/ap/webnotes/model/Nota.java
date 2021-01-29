@@ -1,8 +1,17 @@
-package com.ap.WebNotes.dto;
+package com.ap.webnotes.model;
 
-public class NotaDto {
+import javax.persistence.*;
 
+import java.io.Serializable;
+
+@Entity
+@Table(name = "note")
+public class Nota implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String titolo;
     private String contenuto;
 
@@ -10,7 +19,7 @@ public class NotaDto {
         return id;
     }
 
-    public NotaDto setId(Integer id) {
+    public Nota setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -19,7 +28,7 @@ public class NotaDto {
         return titolo;
     }
 
-    public NotaDto setTitolo(String titolo) {
+    public Nota setTitolo(String titolo) {
         this.titolo = titolo;
         return this;
     }
@@ -28,7 +37,7 @@ public class NotaDto {
         return contenuto;
     }
 
-    public NotaDto setContenuto(String contenuto) {
+    public Nota setContenuto(String contenuto) {
         this.contenuto = contenuto;
         return this;
     }

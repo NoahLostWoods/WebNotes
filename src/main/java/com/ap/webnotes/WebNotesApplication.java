@@ -1,4 +1,4 @@
-package com.ap.WebNotes;
+package com.ap.webnotes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
