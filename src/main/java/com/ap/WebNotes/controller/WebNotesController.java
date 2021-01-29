@@ -1,6 +1,7 @@
 package com.ap.WebNotes.controller;
 
 
+import com.ap.WebNotes.dto.NotaDto;
 import com.ap.WebNotes.model.IDs;
 import com.ap.WebNotes.model.Nota;
 import com.ap.WebNotes.service.implementations.NoteServiceImpl;
@@ -12,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utils.UtilsClass;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class WebNotesController extends UtilsClass {
         if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio home mock -> {}", mock);
             //SETTING MOCK TO DO
-            return ResponseEntity.ok(Arrays.asList(new Nota()));
+            return ResponseEntity.ok(Collections.singletonList(new Nota()));
         }
         logger.info("Inizio chiamata al servizio home");
         List<Nota> listaNote = noteService.getAll();
@@ -44,11 +45,16 @@ public class WebNotesController extends UtilsClass {
     public ResponseEntity<String> postNota(
             @RequestParam("codAzione") CodAzioneEnum codAzione,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock,
-            @RequestBody Nota nota
+            @RequestBody NotaDto dto
     ) {
         if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio postNota, mock -> {}", mock);
         }
+
+        Nota nota = new Nota()
+                .setId(dto.getId())
+                .setTitolo(dto.getTitolo())
+                .setContenuto(dto.getContenuto());
         String message = null;
         logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
         if (!nota.getContenuto().isEmpty() &&
@@ -79,7 +85,11 @@ public class WebNotesController extends UtilsClass {
         logger.info("Inizio chiamata servizio getNota");
         if (id != null) {
             Optional<Nota> notaResult = noteService.findById(id);
-            return ResponseEntity.ok(notaResult.get());
+            if (notaResult.isPresent()) {
+                return ResponseEntity.ok(notaResult.get());
+            } else {
+                ResponseEntity.ok(new Nota());
+            }
         }
         return ResponseEntity.ok(new Nota());
     }
@@ -88,13 +98,17 @@ public class WebNotesController extends UtilsClass {
     @ApiOperation("Api che permette di modificare una determinata nota")
     @PutMapping("/notes/{id}")
     public ResponseEntity<String> putNote(
-            @RequestBody Nota nota,
+            @RequestBody NotaDto dto,
             @PathVariable("id") Integer id,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
         if (Boolean.TRUE.equals(mock))
             logger.info("Fine chiamata servizio putNote mock -> {}", mock);
 
+        Nota nota = new Nota()
+                .setId(dto.getId())
+                .setTitolo(dto.getTitolo())
+                .setContenuto(dto.getContenuto());
         logger.info("Inizio chiamata servizio putNote");
         String message = null;
         if (id != null &&
