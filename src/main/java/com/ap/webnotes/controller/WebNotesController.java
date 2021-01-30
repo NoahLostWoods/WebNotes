@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import utils.UtilsClass;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,9 +27,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/web-notes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WebNotesController extends UtilsClass {
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     private NoteServiceImpl noteService;
@@ -66,6 +64,7 @@ public class WebNotesController extends UtilsClass {
     ) {
         if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio postNota, mock -> {}", mock);
+            return ResponseEntity.ok("OK");
         }
 
         //Move the elaboratio into a factory class.
@@ -94,22 +93,30 @@ public class WebNotesController extends UtilsClass {
 
     @ApiOperation("Api che permette di ricercare una nota per ID")
     @GetMapping("/notes/{id}")
-    public ResponseEntity<Nota> getNota(
+    public ResponseEntity<NotaResource> getNota(
             @PathVariable("id") Integer id,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
-        if (Boolean.TRUE.equals(mock))
+        if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio getNota mock -> {}", mock);
+            return NoteMocks.getNotesMocks();
+        }
         logger.info("Inizio chiamata servizio getNota");
+        //Trasfer elab in a assembler class.
         if (id != null) {
             Optional<Nota> notaResult = noteService.findById(id);
             if (notaResult.isPresent()) {
-                return ResponseEntity.ok(notaResult.get());
+                NotaResource notaResource = new NotaResource()
+                        .setListaNoteResource(Collections.singletonList(new NotaPojo()
+                                .setId(notaResult.get().getId())
+                                .setTitolo(notaResult.get().getTitolo())
+                                .setContenuto(notaResult.get().getContenuto())));
+                return ResponseEntity.ok(notaResource);
             } else {
-                ResponseEntity.ok(new Nota());
+                ResponseEntity.ok(new NotaResource());
             }
         }
-        return ResponseEntity.ok(new Nota());
+        return ResponseEntity.ok(new NotaResource());
     }
 
 
@@ -123,6 +130,7 @@ public class WebNotesController extends UtilsClass {
         if (Boolean.TRUE.equals(mock))
             logger.info("Fine chiamata servizio putNote mock -> {}", mock);
 
+        //Transfer elab in a factory class.
         Nota nota = new Nota()
                 .setId(dto.getId())
                 .setTitolo(dto.getTitolo())
