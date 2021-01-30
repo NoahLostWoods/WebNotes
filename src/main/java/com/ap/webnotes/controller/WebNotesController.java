@@ -3,6 +3,7 @@ package com.ap.webnotes.controller;
 
 import com.ap.webnotes.assembler.GetNoteAssembler;
 import com.ap.webnotes.dto.NotaDto;
+import com.ap.webnotes.factory.PutNoteFactory;
 import com.ap.webnotes.model.IDs;
 import com.ap.webnotes.model.Nota;
 import com.ap.webnotes.resource.NotaResource;
@@ -120,17 +121,13 @@ public class WebNotesController extends UtilsClass {
         if (Boolean.TRUE.equals(mock))
             logger.info("Fine chiamata servizio putNote mock -> {}", mock);
 
-        //Transfer elab in a factory class.
-        Nota nota = new Nota()
-                .setId(dto.getId())
-                .setTitolo(dto.getTitolo())
-                .setContenuto(dto.getContenuto());
+        PutNoteFactory factory = new PutNoteFactory();
         logger.info("Inizio chiamata servizio putNote");
         String message = null;
         if (id != null &&
                 noteService.findById(id).isPresent() &&
-                nota != null) {
-            noteService.saveNota(nota);
+                dto != null) {
+            noteService.saveNota(factory.putNota(dto));
             message = "OK";
             return ResponseEntity.ok(message);
         } else {
