@@ -4,8 +4,12 @@ package com.ap.webnotes.controller;
 import com.ap.webnotes.dto.NotaDto;
 import com.ap.webnotes.model.IDs;
 import com.ap.webnotes.model.Nota;
+import com.ap.webnotes.resource.NotaResource;
+import com.ap.webnotes.resource.pojo.NotaPojo;
 import com.ap.webnotes.service.implementations.NoteServiceImpl;
 import com.ap.webnotes.utils.enums.CodAzioneEnum;
+import com.ap.webnotes.utils.mocks.NoteMocks;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,31 +17,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utils.UtilsClass;
 
-import java.util.Collections;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping(value = "/web-notes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WebNotesController extends UtilsClass {
 
     @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
     private NoteServiceImpl noteService;
 
     @ApiOperation("Api che restituisce una lista di note")
     @GetMapping("/notes")
-    public ResponseEntity<List<Nota>> getNote(
+    public ResponseEntity<NotaResource> getNote(
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
-    ) {
+    ) throws IOException {
 
         if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio home mock -> {}", mock);
-            //SETTING MOCK TO DO
-            return ResponseEntity.ok(Collections.singletonList(new Nota()));
+            return NoteMocks.getNotesMocks();
         }
+
         logger.info("Inizio chiamata al servizio home");
         List<Nota> listaNote = noteService.getAll();
-        return ResponseEntity.ok(listaNote);
+        //Move the elaboration into assembler class.
+        NotaResource notaResource = new NotaResource()
+                .setListaNoteResource(listaNote.stream().map(nota ->
+                        new NotaPojo()
+                                .setId(nota.getId())
+                                .setContenuto(nota.getContenuto())
+                                .setTitolo(nota.getTitolo()))
+                        .collect(Collectors.toList()));
+        return ResponseEntity.ok(notaResource);
     }
 
     @ApiOperation("Api che permette di inserire una nota")
@@ -51,6 +68,7 @@ public class WebNotesController extends UtilsClass {
             logger.info("Fine chiamata servizio postNota, mock -> {}", mock);
         }
 
+        //Move the elaboratio into a factory class.
         Nota nota = new Nota()
                 .setId(dto.getId())
                 .setTitolo(dto.getTitolo())
