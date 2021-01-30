@@ -1,6 +1,7 @@
 package com.ap.webnotes.controller;
 
 
+import com.ap.webnotes.assembler.GetNoteAssembler;
 import com.ap.webnotes.dto.NotaDto;
 import com.ap.webnotes.model.IDs;
 import com.ap.webnotes.model.Nota;
@@ -44,15 +45,8 @@ public class WebNotesController extends UtilsClass {
 
         logger.info("Inizio chiamata al servizio home");
         List<Nota> listaNote = noteService.getAll();
-        //Move the elaboration into assembler class.
-        NotaResource notaResource = new NotaResource()
-                .setListaNoteResource(listaNote.stream().map(nota ->
-                        new NotaPojo()
-                                .setId(nota.getId())
-                                .setContenuto(nota.getContenuto())
-                                .setTitolo(nota.getTitolo()))
-                        .collect(Collectors.toList()));
-        return ResponseEntity.ok(notaResource);
+        GetNoteAssembler assembler = new GetNoteAssembler();
+        return ResponseEntity.ok(assembler.toResource(listaNote));
     }
 
     @ApiOperation("Api che permette di inserire una nota")
