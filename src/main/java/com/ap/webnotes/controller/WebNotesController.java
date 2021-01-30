@@ -36,7 +36,7 @@ public class WebNotesController extends UtilsClass {
     @GetMapping("/notes")
     public ResponseEntity<NotaResource> getNote(
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
-    ) throws IOException {
+    ) {
 
         if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio home mock -> {}", mock);
@@ -96,16 +96,12 @@ public class WebNotesController extends UtilsClass {
             return NoteMocks.getNotesMocks();
         }
         logger.info("Inizio chiamata servizio getNota");
-        //Trasfer elab in a assembler class.
         if (id != null) {
             Optional<Nota> notaResult = noteService.findById(id);
             if (notaResult.isPresent()) {
-                NotaResource notaResource = new NotaResource()
-                        .setListaNoteResource(Collections.singletonList(new NotaPojo()
-                                .setId(notaResult.get().getId())
-                                .setTitolo(notaResult.get().getTitolo())
-                                .setContenuto(notaResult.get().getContenuto())));
-                return ResponseEntity.ok(notaResource);
+                GetNoteAssembler assembler = new GetNoteAssembler();
+                NotaResource resource = assembler.toResource(notaResult);
+                return ResponseEntity.ok(resource);
             } else {
                 ResponseEntity.ok(new NotaResource());
             }
