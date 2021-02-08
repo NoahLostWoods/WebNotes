@@ -1,8 +1,12 @@
 package com.ap.webnotes.model;
 
 import com.ap.webnotes.config.BaseTest;
+import com.sun.xml.bind.v2.model.core.ID;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 public class modelTest extends BaseTest {
 
@@ -16,5 +20,14 @@ public class modelTest extends BaseTest {
         nota.getId();
         nota.getTitolo();
         nota.getContenuto();
+    }
+
+    @Test
+    public void idTest(){
+        IDs ids = new IDs();
+        Assert.assertNotNull(
+                ids.setListIds(Collections.singletonList(3))
+        );
+        ids.getListIds();
     }
 }
