@@ -62,7 +62,7 @@ public class WebNotesController extends UtilsClass {
             return ResponseEntity.ok("OK");
         }
 
-        //Move the elaboratio into a factory class.
+        //Move the elaboration into a factory class.
         Nota nota = new Nota()
                 .setId(dto.getId())
                 .setTitolo(dto.getTitolo())
@@ -98,8 +98,8 @@ public class WebNotesController extends UtilsClass {
         }
         logger.info("Inizio chiamata servizio getNota");
         if (id != null) {
-            Optional<Nota> notaResult = noteService.findById(id);
-            if (notaResult.isPresent()) {
+            Nota notaResult = noteService.getOne(id);
+            if (notaResult != null) {
                 GetNoteAssembler assembler = new GetNoteAssembler();
                 NotaResource resource = assembler.toResource(notaResult);
                 return ResponseEntity.ok(resource);
@@ -125,7 +125,7 @@ public class WebNotesController extends UtilsClass {
         logger.info("Inizio chiamata servizio putNote");
         String message = null;
         if (id != null &&
-                noteService.findById(id).isPresent() &&
+                noteService.getOne(id) != null &&
                 dto != null) {
             noteService.saveNota(factory.putNota(dto));
             message = "OK";
@@ -149,8 +149,8 @@ public class WebNotesController extends UtilsClass {
         logger.info("Inizio chiamata servizio deleteNota");
         String message = null;
         if (id != null) {
-            Optional<Nota> foundId = noteService.findById(id);
-            if (foundId.isPresent()) {
+            Nota foundId = noteService.getOne(id);
+            if (foundId != null) {
                 noteService.delete(id);
                 message = "OK";
             } else {

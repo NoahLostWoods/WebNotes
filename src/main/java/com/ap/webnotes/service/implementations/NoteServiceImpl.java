@@ -26,8 +26,8 @@ public class NoteServiceImpl implements NoteServiceInterface {
     }
 
     @Override
-    public Optional<Nota> findById(Integer id) {
-        return noteRepos.findById(id);
+    public Nota getOne(Integer id) {
+        return noteRepos.getOne(id);
     }
 
     @Override
