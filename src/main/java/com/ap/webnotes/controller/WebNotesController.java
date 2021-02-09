@@ -3,15 +3,14 @@ package com.ap.webnotes.controller;
 
 import com.ap.webnotes.assembler.GetNoteAssembler;
 import com.ap.webnotes.dto.NotaDto;
+import com.ap.webnotes.factory.PostNoteFactory;
 import com.ap.webnotes.factory.PutNoteFactory;
 import com.ap.webnotes.model.IDs;
 import com.ap.webnotes.model.Nota;
 import com.ap.webnotes.resource.NotaResource;
-import com.ap.webnotes.resource.pojo.NotaPojo;
 import com.ap.webnotes.service.implementations.NoteServiceImpl;
 import com.ap.webnotes.utils.enums.CodAzioneEnum;
 import com.ap.webnotes.utils.mocks.NoteMocks;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,11 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utils.UtilsClass;
 
-import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -33,6 +28,9 @@ public class WebNotesController extends UtilsClass {
     @Autowired
     private NoteServiceImpl noteService;
 
+    @Autowired
+    private PostNoteFactory postNoteFactory;
+
     @ApiOperation("Api che restituisce una lista di note")
     @GetMapping("/notes")
     public ResponseEntity<NotaResource> getNote(
@@ -40,11 +38,11 @@ public class WebNotesController extends UtilsClass {
     ) {
 
         if (Boolean.TRUE.equals(mock)) {
-            logger.info("Fine chiamata servizio home mock -> {}", mock);
+            logger.info("Fine chiamata servizio getNote mock -> {}", mock);
             return NoteMocks.getNotesMocks();
         }
 
-        logger.info("Inizio chiamata al servizio home");
+        logger.info("Inizio chiamata al servizio getNote");
         List<Nota> listaNote = noteService.getAll();
         GetNoteAssembler assembler = new GetNoteAssembler();
         return ResponseEntity.ok(assembler.toResource(listaNote));
@@ -62,11 +60,7 @@ public class WebNotesController extends UtilsClass {
             return ResponseEntity.ok("OK");
         }
 
-        //Move the elaboration into a factory class.
-        Nota nota = new Nota()
-                .setId(dto.getId())
-                .setTitolo(dto.getTitolo())
-                .setContenuto(dto.getContenuto());
+        Nota nota = postNoteFactory.postNota(dto);
         String message = null;
         logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
         if (!nota.getContenuto().isEmpty() &&
