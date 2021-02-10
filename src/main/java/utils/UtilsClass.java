@@ -7,5 +7,5 @@ import org.springframework.web.servlet.ModelAndView;
 public class UtilsClass {
 
     // ==LOGGER==
-    public Logger logger = LoggerFactory.getLogger(this.getClass());
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
 }

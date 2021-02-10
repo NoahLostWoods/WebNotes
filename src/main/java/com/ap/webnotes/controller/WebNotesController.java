@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utils.UtilsClass;
+
 import java.util.List;
 
 @RestController
@@ -24,10 +25,8 @@ public class WebNotesController extends UtilsClass {
 
     @Autowired
     private NoteServiceImpl noteService;
-
     @Autowired
     private PostNoteFactory postNoteFactory;
-
     @Autowired
     private PutNoteFactory putNoteFactory;
 

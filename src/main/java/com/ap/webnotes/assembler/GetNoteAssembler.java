@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 public class GetNoteAssembler {
 
     public NotaResource toResource(List<Nota> model) {
-
         return new NotaResource()
                 .setListaNoteResource(model
                         .stream()
@@ -22,16 +21,6 @@ public class GetNoteAssembler {
     }
 
     public NotaResource toResource(Nota model) {
-
-        /*
-        return new NotaResource()
-                .setListaNoteResource(Arrays.asList(new NotaPojo()
-                        .setId(model.map(Nota::getId).orElse(null))
-                        .setTitolo(model.map(Nota::getTitolo).orElse(null))
-                        .setContenuto(model.map(Nota::getContenuto).orElse(null))));
-
-         */
-
         return new NotaResource()
                 .setListaNoteResource(
                         Collections.singletonList(
