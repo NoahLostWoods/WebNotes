@@ -1,11 +1,9 @@
 package com.ap.webnotes.model;
 
 import com.ap.webnotes.config.BaseTest;
-import com.sun.xml.bind.v2.model.core.ID;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 public class modelTest extends BaseTest {
@@ -23,7 +21,7 @@ public class modelTest extends BaseTest {
     }
 
     @Test
-    public void idTest(){
+    public void idTest() {
         IDs ids = new IDs();
         Assert.assertNotNull(
                 ids.setListIds(Collections.singletonList(3))
