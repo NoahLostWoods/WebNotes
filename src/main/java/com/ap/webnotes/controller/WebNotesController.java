@@ -1,6 +1,5 @@
 package com.ap.webnotes.controller;
 
-
 import com.ap.webnotes.assembler.GetNoteAssembler;
 import com.ap.webnotes.dto.NotaDto;
 import com.ap.webnotes.factory.PostNoteFactory;
@@ -17,9 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utils.UtilsClass;
-
 import java.util.List;
-
 
 @RestController
 @RequestMapping(value = "/web-notes", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -30,6 +27,9 @@ public class WebNotesController extends UtilsClass {
 
     @Autowired
     private PostNoteFactory postNoteFactory;
+
+    @Autowired
+    private PutNoteFactory putNoteFactory;
 
     @ApiOperation("Api che restituisce una lista di note")
     @GetMapping("/notes")
@@ -115,13 +115,12 @@ public class WebNotesController extends UtilsClass {
         if (Boolean.TRUE.equals(mock))
             logger.info("Fine chiamata servizio putNote mock -> {}", mock);
 
-        PutNoteFactory factory = new PutNoteFactory();
         logger.info("Inizio chiamata servizio putNote");
         String message = null;
         if (id != null &&
                 noteService.getOne(id) != null &&
                 dto != null) {
-            noteService.saveNota(factory.putNota(dto));
+            noteService.saveNota(putNoteFactory.putNota(dto));
             message = "OK";
             return ResponseEntity.ok(message);
         } else {
