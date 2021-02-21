@@ -1,6 +1,8 @@
 package com.ap.webnotes.controller;
 
 import com.ap.webnotes.assembler.GetUserAssembler;
+import com.ap.webnotes.dto.UserDto;
+import com.ap.webnotes.factory.PostUserFactory;
 import com.ap.webnotes.model.Users;
 import com.ap.webnotes.resource.UsersResource;
 import com.ap.webnotes.service.implementations.UserServiceImpl;
@@ -8,6 +10,7 @@ import com.ap.webnotes.utils.UtilsClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -19,6 +22,9 @@ public class UserController extends UtilsClass {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    private PostUserFactory postUserFactory;
 
     @GetMapping("/users")
     public ResponseEntity<List<UsersResource>> getUsers(
@@ -32,14 +38,17 @@ public class UserController extends UtilsClass {
         logger.info("Inizio chiamata servizio getUsers");
         List<Users> users = userService.getAllUsers();
         GetUserAssembler assembler = new GetUserAssembler();
-        return ResponseEntity.ok(assembler.toResource(users));
+        if (users != null) {
+            return ResponseEntity.ok(assembler.toResource(users));
+        }
+        return ResponseEntity.ok(Collections.emptyList());
 
     }
 
     @PostMapping("/user")
     public ResponseEntity<String> postUser(
-            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
-            //@RequestBody @Validated UserDto dto
+            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock,
+            @RequestBody @Validated UserDto dto
     ) {
         if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio postUser mock -> {}", mock);
@@ -48,7 +57,17 @@ public class UserController extends UtilsClass {
 
         logger.info("Inizio chiamata servizio postUser");
 
+        Users users = postUserFactory.dtoToModel(dto);
+        if (users != null &&
+                !users.getUser().isEmpty() &&
+                !users.getPassword().isEmpty()) {
+            try {
+                userService.saveUser(users);
+                return ResponseEntity.ok("OK");
+            } catch (Exception e) {
+                return ResponseEntity.ok("KO");
+            }
+        }
         return null;
-
     }
 }
