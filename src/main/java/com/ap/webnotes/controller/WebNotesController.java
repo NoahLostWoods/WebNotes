@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utils.UtilsClass;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -156,7 +157,7 @@ public class WebNotesController extends UtilsClass {
 
     @ApiOperation("Api che permette di eliminare n note")
     @DeleteMapping("/notes")
-    public ResponseEntity<String> deleteNotes(
+    public ResponseEntity<List<String>> deleteNotes(
             @RequestBody IDs dto,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
@@ -164,13 +165,27 @@ public class WebNotesController extends UtilsClass {
             logger.info("Fine chiamata servizio deleteNotes mock -> {}", mock);
 
         logger.info("Inizio chiamata al servizio deleteNotes");
-        if (dto != null) {
+
+        //StringBuilder message = new StringBuilder();
+        //OutComeModelOut outComeModelOut = new OutComeModelOut();
+        List<String> message = new ArrayList<>();
+
+        if (dto != null &&
+                !dto.getListIds().isEmpty()) {
             for (Integer id : dto.getListIds()) {
-                noteService.delete(id);
+                try {
+                    noteService.delete(id);
+                    //message.append("[" + id + ": OK] ");
+                    message.add("[" + id + ": OK] ");
+                } catch (Exception e) {
+                    //message.append("[" + id + ": KO] ");
+                    message.add("[" + id + ": KO] ");
+
+                }
             }
-        } else {
-            return ResponseEntity.ok("KO");
         }
-        return ResponseEntity.ok("OK");
+        //outComeModelOut.setMessage(message.toString());
+
+        return ResponseEntity.ok(message);
     }
 }
