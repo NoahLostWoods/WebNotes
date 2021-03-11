@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
-public class UtilsClass {
+public class UtilsClass extends Utility {
 
     // ==LOGGER==
     public Logger logger = LoggerFactory.getLogger(this.getClass());

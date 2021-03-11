@@ -8,6 +8,7 @@ import com.ap.webnotes.model.IDs;
 import com.ap.webnotes.model.Nota;
 import com.ap.webnotes.resource.NotaResource;
 import com.ap.webnotes.service.implementations.NoteServiceImpl;
+import com.ap.webnotes.utils.UtilsClass;
 import com.ap.webnotes.utils.enums.CodAzioneEnum;
 import com.ap.webnotes.utils.mocks.NoteMocks;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import utils.UtilsClass;
+import com.ap.webnotes.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
