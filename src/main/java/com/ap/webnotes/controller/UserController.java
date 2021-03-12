@@ -42,6 +42,8 @@ public class UserController extends UtilsClass {
 
         Supplier<List<Users>> userRetriver = () -> userCommand.getUsers();
         GetUsersAssembler assembler = new GetUsersAssembler();
+
+        logger.info("Fine servizio getUsers");
         return ResponseEntity.ok(assembler.toResource(userRetriver.get()));
 
     }
@@ -52,11 +54,11 @@ public class UserController extends UtilsClass {
             @RequestBody @Validated UserDto dto
     ) {
         if (Boolean.TRUE.equals(mock)) {
-            logger.info("Fine chiamata servizio postUser mock -> {}", mock);
+            logger.info("Fine servizio postUser mock -> {}", mock);
             return ResponseEntity.ok("MOCKED");
         }
 
-        logger.info("Inizio chiamata servizio postUser");
+        logger.info("Inizio servizio postUser");
 
         Users users = postUserFactory.dtoToModel(dto);
 
@@ -64,8 +66,10 @@ public class UserController extends UtilsClass {
 
         if (!checkUserExsistence(getUser, users)) {
             userCommand.postUser(users);
+            logger.info("Fine servizio postUser");
             return ResponseEntity.ok("Utente registrato con successo!");
         } else {
+            logger.info("Fine servizio postUser");
             return ResponseEntity.ok("Utente già esistente");
         }
     }
@@ -78,7 +82,6 @@ public class UserController extends UtilsClass {
 
         if (Boolean.TRUE.equals(mock)) {
             logger.info("Fine chiamata servizio getUser mock -> {}", mock);
-            //Trasportare in una modelMock
             return ResponseEntity.ok(UserMockModels.getUser());
         }
 
@@ -88,6 +91,7 @@ public class UserController extends UtilsClass {
 
         GetUserAssembler assembler = new GetUserAssembler();
 
+        logger.info("Fine servizio getUser");
         return ResponseEntity.ok(assembler.toResource(user));
     }
 
