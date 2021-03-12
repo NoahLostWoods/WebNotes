@@ -16,13 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.ap.webnotes.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/web-notes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/web/notes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WebNotesController extends UtilsClass {
 
     @Autowired

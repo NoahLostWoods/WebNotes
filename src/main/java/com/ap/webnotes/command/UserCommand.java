@@ -30,4 +30,13 @@ public class UserCommand {
             e.printStackTrace();
         }
     }
+
+    public Users getUser(Integer id) {
+        try {
+            return userService.findById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
