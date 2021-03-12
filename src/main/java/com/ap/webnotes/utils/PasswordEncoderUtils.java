@@ -1,5 +1,6 @@
 package com.ap.webnotes.utils;
 
-public class PasswordEncoderUtils {
+import java.net.PasswordAuthentication;
 
+public class PasswordEncoderUtils {
 }
