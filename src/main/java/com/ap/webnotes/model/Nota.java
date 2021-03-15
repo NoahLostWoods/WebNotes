@@ -3,6 +3,7 @@ package com.ap.webnotes.model;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "note")
@@ -14,6 +15,8 @@ public class Nota implements Serializable {
 
     private String titolo;
     private String contenuto;
+    private LocalDateTime tmsUltimoAggiornamento;
+    private LocalDateTime tmsInserimento;
 
     public Integer getId() {
         return id;
@@ -39,6 +42,24 @@ public class Nota implements Serializable {
 
     public Nota setContenuto(String contenuto) {
         this.contenuto = contenuto;
+        return this;
+    }
+
+    public LocalDateTime getTmsUltimoAggiornamento() {
+        return tmsUltimoAggiornamento;
+    }
+
+    public Nota setTmsUltimoAggiornamento(LocalDateTime tmsUltimoAggiornamento) {
+        this.tmsUltimoAggiornamento = tmsUltimoAggiornamento;
+        return this;
+    }
+
+    public LocalDateTime getTmsInserimento() {
+        return tmsInserimento;
+    }
+
+    public Nota setTmsInserimento(LocalDateTime tmsInserimento) {
+        this.tmsInserimento = tmsInserimento;
         return this;
     }
 }

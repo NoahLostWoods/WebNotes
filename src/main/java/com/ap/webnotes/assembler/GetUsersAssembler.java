@@ -14,7 +14,8 @@ public class GetUsersAssembler {
         return users != null ? users.stream().map(user -> new UsersResource()
                 .setId(user.getId())
                 .setUser(user.getUser())
-                .setPassword(user.getPassword()))
+                .setPassword(user.getPassword())
+                .setTmsRegistered(user.getTmsRegistered()))
                 .collect(Collectors.toList())
                 : Collections.emptyList();
 

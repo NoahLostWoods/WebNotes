@@ -1,6 +1,7 @@
 package com.ap.webnotes.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Table
 @Entity(name = "users")
@@ -12,6 +13,7 @@ public class Users {
 
     private String user;
     private String password;
+    private LocalDateTime tmsRegistered;
 
     public Integer getId() {
         return id;
@@ -37,6 +39,15 @@ public class Users {
 
     public Users setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public LocalDateTime getTmsRegistered() {
+        return tmsRegistered;
+    }
+
+    public Users setTmsRegistered(LocalDateTime tmsRegistered) {
+        this.tmsRegistered = tmsRegistered;
         return this;
     }
 }

@@ -6,6 +6,8 @@ import com.ap.webnotes.utils.PasswordEncoderUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class PostUserFactory {
 
@@ -18,7 +20,8 @@ public class PostUserFactory {
                 !dto.getPasswd().isEmpty()) {
             return new Users()
                     .setUser(dto.getUser())
-                    .setPassword(dto.getPasswd());
+                    .setPassword(dto.getPasswd())
+                    .setTmsRegistered(LocalDateTime.now());
         }
         return null;
     }

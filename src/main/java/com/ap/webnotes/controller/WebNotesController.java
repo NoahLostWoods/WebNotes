@@ -117,10 +117,11 @@ public class WebNotesController extends UtilsClass {
 
         logger.info("Inizio chiamata servizio putNote");
         String message = null;
+        Nota singleNote = noteService.getOne(id);
         if (id != null &&
                 noteService.getOne(id) != null &&
                 dto != null) {
-            noteService.saveNota(putNoteFactory.putNota(dto));
+            noteService.saveNota(putNoteFactory.putNota(dto, id, singleNote.getTmsInserimento()));
             message = "OK";
             return ResponseEntity.ok(message);
         } else {

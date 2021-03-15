@@ -4,6 +4,8 @@ import com.ap.webnotes.dto.NotaDto;
 import com.ap.webnotes.model.Nota;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class PostNoteFactory {
 
@@ -11,7 +13,8 @@ public class PostNoteFactory {
         return new Nota()
                 .setId(dto.getId())
                 .setTitolo(dto.getTitolo())
-                .setContenuto(dto.getContenuto());
+                .setContenuto(dto.getContenuto())
+                .setTmsInserimento(LocalDateTime.now());
 
     }
 }

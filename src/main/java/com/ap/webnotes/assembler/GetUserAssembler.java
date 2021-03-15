@@ -7,9 +7,10 @@ public class GetUserAssembler {
 
     public UsersResource toResource(Users model) {
 
-        return new UsersResource()
+        return model != null ? new UsersResource()
                 .setId(model.getId())
                 .setUser(model.getUser())
-                .setPassword(model.getPassword());
+                .setPassword(model.getPassword())
+                .setTmsRegistered(model.getTmsRegistered()) : new UsersResource();
     }
 }

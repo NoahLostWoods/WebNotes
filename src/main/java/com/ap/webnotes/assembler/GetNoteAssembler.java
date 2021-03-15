@@ -16,7 +16,9 @@ public class GetNoteAssembler {
                         .map(nota -> new NotaPojo()
                                 .setId(nota.getId())
                                 .setTitolo(nota.getTitolo())
-                                .setContenuto(nota.getContenuto()))
+                                .setContenuto(nota.getContenuto())
+                                .setTmsInserimento(nota.getTmsInserimento())
+                                .setTmsUltimoAggiornamento(nota.getTmsUltimoAggiornamento()))
                         .collect(Collectors.toList()));
     }
 
@@ -28,6 +30,8 @@ public class GetNoteAssembler {
                                         .setId(model.getId())
                                         .setTitolo(model.getTitolo())
                                         .setContenuto(model.getContenuto())
+                                        .setTmsInserimento(model.getTmsInserimento())
+                                        .setTmsUltimoAggiornamento(model.getTmsUltimoAggiornamento())
                         ));
     }
 
