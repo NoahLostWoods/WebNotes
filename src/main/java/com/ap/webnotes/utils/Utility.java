@@ -16,6 +16,6 @@ public class Utility {
     public static boolean checkUserExsistence(List<Users> checkUser, Users usersToInsert) {
 
         return checkUser != null && checkUser.stream()
-                .anyMatch(check -> check.getUser().contains(usersToInsert.getUser()));
+                .allMatch(check -> check.getUser().contains(usersToInsert.getUser()));
     }
 }
