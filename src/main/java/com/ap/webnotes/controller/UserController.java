@@ -64,7 +64,7 @@ public class UserController extends UtilsClass {
 
         List<Users> getUser = userCommand.getUsers();
 
-        if (getUser.isEmpty() || !checkUserExsistence(getUser, users)) {
+        if (getUser.isEmpty() || !checkUserExsistence(getUser, dto)) {
             userCommand.postUser(users);
             logger.info("Fine servizio postUser");
             return ResponseEntity.ok("Utente registrato con successo!");

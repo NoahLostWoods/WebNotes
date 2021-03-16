@@ -1,6 +1,7 @@
 package com.ap.webnotes.controller;
 
 import com.ap.webnotes.assembler.GetNoteAssembler;
+import com.ap.webnotes.command.NoteCommand;
 import com.ap.webnotes.dto.NotaDto;
 import com.ap.webnotes.factory.PostNoteFactory;
 import com.ap.webnotes.factory.PutNoteFactory;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,8 +26,9 @@ import java.util.List;
 @RequestMapping(value = "/web/notes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WebNotesController extends UtilsClass {
 
+
     @Autowired
-    private NoteServiceImpl noteService;
+    private NoteCommand noteCommand;
     @Autowired
     private PostNoteFactory postNoteFactory;
     @Autowired
@@ -43,7 +46,7 @@ public class WebNotesController extends UtilsClass {
         }
 
         logger.info("Inizio chiamata al servizio getNote");
-        List<Nota> listaNote = noteService.getAll();
+        List<Nota> listaNote = noteCommand.getNotes();
         GetNoteAssembler assembler = new GetNoteAssembler();
         return ResponseEntity.ok(assembler.toResource(listaNote));
     }
@@ -59,25 +62,21 @@ public class WebNotesController extends UtilsClass {
             logger.info("Fine chiamata servizio postNota, mock -> {}", mock);
             return ResponseEntity.ok("OK");
         }
-
-        Nota nota = postNoteFactory.postNota(dto);
         String message = null;
-        logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
-        if (!nota.getContenuto().isEmpty() &&
-                !nota.getTitolo().isEmpty()) {
-            noteService.saveNota(nota);
-            List<Nota> listaNote = noteService.getAll();
+        List<Nota> checkNotes = noteCommand.getNotes();
+        if (!checkNotaExisistence(checkNotes, dto)) {
+            Nota nota = postNoteFactory.postNota(dto);
+            logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
+            noteCommand.postNote(nota);
+            List<Nota> listaNote = noteCommand.getNotes();
             if (!listaNote.isEmpty()) {
                 message = "OK";
-                return ResponseEntity.ok(message);
             } else {
                 message = "KO";
-                return ResponseEntity.ok(message);
             }
-        } else {
-            message = "KO";
             return ResponseEntity.ok(message);
         }
+        return null;
     }
 
     @ApiOperation("Api che permette di ricercare una nota per ID")
@@ -92,7 +91,7 @@ public class WebNotesController extends UtilsClass {
         }
         logger.info("Inizio chiamata servizio getNota");
         if (id != null) {
-            Nota notaResult = noteService.getOne(id);
+            Nota notaResult = noteCommand.getSingleNote(id);
             if (notaResult != null) {
                 GetNoteAssembler assembler = new GetNoteAssembler();
                 NotaResource resource = assembler.toResource(notaResult);
@@ -117,17 +116,15 @@ public class WebNotesController extends UtilsClass {
 
         logger.info("Inizio chiamata servizio putNote");
         String message = null;
-        Nota singleNote = noteService.getOne(id);
-        if (id != null &&
-                noteService.getOne(id) != null &&
-                dto != null) {
-            noteService.saveNota(putNoteFactory.putNota(dto, id, singleNote.getTmsInserimento()));
+        Nota singleNote = noteCommand.getSingleNote(id);
+
+        if (id != null && singleNote != null && dto != null) {
+            noteCommand.putNote(putNoteFactory.putNota(dto, id, singleNote.getTmsInserimento()));
             message = "OK";
-            return ResponseEntity.ok(message);
         } else {
             message = "KO";
-            return ResponseEntity.ok(message);
         }
+        return ResponseEntity.ok(message);
 
     }
 
@@ -143,9 +140,9 @@ public class WebNotesController extends UtilsClass {
         logger.info("Inizio chiamata servizio deleteNota");
         String message = null;
         if (id != null) {
-            Nota foundId = noteService.getOne(id);
+            Nota foundId = noteCommand.getSingleNote(id);
             if (foundId != null) {
-                noteService.delete(id);
+                noteCommand.deleteSingleNote(id);
                 message = "OK";
             } else {
                 message = "KO";
@@ -159,7 +156,7 @@ public class WebNotesController extends UtilsClass {
     @ApiOperation("Api che permette di eliminare n note")
     @DeleteMapping("/notes")
     public ResponseEntity<List<String>> deleteNotes(
-            @RequestBody IDs dto,
+            @RequestBody @Validated IDs dto,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
         if (Boolean.TRUE.equals(mock))
@@ -167,26 +164,6 @@ public class WebNotesController extends UtilsClass {
 
         logger.info("Inizio chiamata al servizio deleteNotes");
 
-        //StringBuilder message = new StringBuilder();
-        //OutComeModelOut outComeModelOut = new OutComeModelOut();
-        List<String> message = new ArrayList<>();
-
-        if (dto != null &&
-                !dto.getListIds().isEmpty()) {
-            for (Integer id : dto.getListIds()) {
-                try {
-                    noteService.delete(id);
-                    //message.append("[" + id + ": OK] ");
-                    message.add("[" + id + ": OK] ");
-                } catch (Exception e) {
-                    //message.append("[" + id + ": KO] ");
-                    message.add("[" + id + ": KO] ");
-
-                }
-            }
-        }
-        //outComeModelOut.setMessage(message.toString());
-
-        return ResponseEntity.ok(message);
+        return ResponseEntity.ok(noteCommand.deleteMultipleNote(dto));
     }
 }

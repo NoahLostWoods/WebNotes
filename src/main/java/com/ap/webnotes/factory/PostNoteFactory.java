@@ -10,11 +10,14 @@ import java.time.LocalDateTime;
 public class PostNoteFactory {
 
     public Nota postNota(NotaDto dto) {
-        return new Nota()
-                .setId(dto.getId())
-                .setTitolo(dto.getTitolo())
-                .setContenuto(dto.getContenuto())
-                .setTmsInserimento(LocalDateTime.now());
+        return dto != null &&
+                dto.getTitolo() != null &&
+                dto.getContenuto() != null ?
+                new Nota()
+                        .setId(dto.getId())
+                        .setTitolo(dto.getTitolo())
+                        .setContenuto(dto.getContenuto())
+                        .setTmsInserimento(LocalDateTime.now()) : new Nota();
 
     }
 }
