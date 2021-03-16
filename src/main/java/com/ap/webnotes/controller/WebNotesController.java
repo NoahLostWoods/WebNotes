@@ -41,13 +41,15 @@ public class WebNotesController extends UtilsClass {
     ) {
 
         if (Boolean.TRUE.equals(mock)) {
-            logger.info("Fine chiamata servizio getNote mock -> {}", mock);
+            logger.info("Fine chiamata servizio getNotes mock -> {}", mock);
             return NoteMocks.getNotesMocks();
         }
 
-        logger.info("Inizio chiamata al servizio getNote");
+        logger.info("Inizio chiamata al servizio getNotes");
         List<Nota> listaNote = noteCommand.getNotes();
         GetNoteAssembler assembler = new GetNoteAssembler();
+
+        logger.info("Fine chiamata al servizio getNotes");
         return ResponseEntity.ok(assembler.toResource(listaNote));
     }
 
@@ -62,21 +64,14 @@ public class WebNotesController extends UtilsClass {
             logger.info("Fine chiamata servizio postNota, mock -> {}", mock);
             return ResponseEntity.ok("OK");
         }
-        String message = null;
+        logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
         List<Nota> checkNotes = noteCommand.getNotes();
-        if (!checkNotaExisistence(checkNotes, dto)) {
-            Nota nota = postNoteFactory.postNota(dto);
-            logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
-            noteCommand.postNote(nota);
-            List<Nota> listaNote = noteCommand.getNotes();
-            if (!listaNote.isEmpty()) {
-                message = "OK";
-            } else {
-                message = "KO";
-            }
-            return ResponseEntity.ok(message);
-        }
-        return null;
+        Nota nota = postNoteFactory.postNota(dto);
+        String message = noteCommand.postNote(nota, checkNotes, dto);
+
+        logger.info("Fine chiamata servizio postNota");
+        return ResponseEntity.ok(message);
+
     }
 
     @ApiOperation("Api che permette di ricercare una nota per ID")
@@ -90,17 +85,12 @@ public class WebNotesController extends UtilsClass {
             return NoteMocks.getNotesMocks();
         }
         logger.info("Inizio chiamata servizio getNota");
-        if (id != null) {
-            Nota notaResult = noteCommand.getSingleNote(id);
-            if (notaResult != null) {
-                GetNoteAssembler assembler = new GetNoteAssembler();
-                NotaResource resource = assembler.toResource(notaResult);
-                return ResponseEntity.ok(resource);
-            } else {
-                ResponseEntity.ok(new NotaResource());
-            }
-        }
-        return ResponseEntity.ok(new NotaResource());
+        Nota notaResult = noteCommand.getSingleNote(id);
+        GetNoteAssembler assembler = new GetNoteAssembler();
+
+        logger.info("Fine chiamata servizio getNota");
+        return ResponseEntity.ok(assembler.toResource(notaResult));
+
     }
 
 
@@ -115,15 +105,9 @@ public class WebNotesController extends UtilsClass {
             logger.info("Fine chiamata servizio putNote mock -> {}", mock);
 
         logger.info("Inizio chiamata servizio putNote");
-        String message = null;
-        Nota singleNote = noteCommand.getSingleNote(id);
-
-        if (id != null && singleNote != null && dto != null) {
-            noteCommand.putNote(putNoteFactory.putNota(dto, id, singleNote.getTmsInserimento()));
-            message = "OK";
-        } else {
-            message = "KO";
-        }
+        Nota nota = putNoteFactory.putNota(dto, id);
+        String message = (noteCommand.putNote(nota));
+        logger.info("Fine chiamata servizio putNote");
         return ResponseEntity.ok(message);
 
     }
@@ -131,27 +115,20 @@ public class WebNotesController extends UtilsClass {
     @ApiOperation("Api che permette di eliminate una determinata nota")
     @DeleteMapping("/notes/{id}")
     public ResponseEntity<String> deleteNota(
-            @PathVariable("id") Integer id,
+            @PathVariable("id") @Validated Integer id,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
         if (Boolean.TRUE.equals(mock))
             logger.info("Fine chiamata servizio deleteNota mock -> {}", mock);
 
         logger.info("Inizio chiamata servizio deleteNota");
-        String message = null;
-        if (id != null) {
-            Nota foundId = noteCommand.getSingleNote(id);
-            if (foundId != null) {
-                noteCommand.deleteSingleNote(id);
-                message = "OK";
-            } else {
-                message = "KO";
-            }
-            return ResponseEntity.ok(message);
-        }
-        message = "ID is null";
+
+        String message = noteCommand.deleteSingleNote(id);
+
+        logger.info("Fine chiamata servizio deleteNota");
         return ResponseEntity.ok(message);
     }
+
 
     @ApiOperation("Api che permette di eliminare n note")
     @DeleteMapping("/notes")
@@ -163,7 +140,8 @@ public class WebNotesController extends UtilsClass {
             logger.info("Fine chiamata servizio deleteNotes mock -> {}", mock);
 
         logger.info("Inizio chiamata al servizio deleteNotes");
-
-        return ResponseEntity.ok(noteCommand.deleteMultipleNote(dto));
+        List<String> message = noteCommand.deleteMultipleNote(dto);
+        logger.info("Fine chiamata al servizio deleteNotes");
+        return ResponseEntity.ok(message);
     }
 }

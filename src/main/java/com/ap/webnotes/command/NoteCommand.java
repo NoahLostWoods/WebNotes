@@ -1,9 +1,11 @@
 package com.ap.webnotes.command;
 
+import com.ap.webnotes.controller.WebNotesController;
 import com.ap.webnotes.dto.NotaDto;
 import com.ap.webnotes.model.IDs;
 import com.ap.webnotes.model.Nota;
 import com.ap.webnotes.service.implementations.NoteServiceImpl;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,20 +22,47 @@ public class NoteCommand {
         return noteService.getAll();
     }
 
-    public void postNote(Nota nota) {
-        noteService.saveNota(nota);
+    public String postNote(Nota nota, List<Nota> checkNotes, NotaDto dto) {
+        String message;
+        try {
+            if (!WebNotesController.checkNotaExisistence(checkNotes, dto)) {
+                noteService.saveNota(nota);
+            }
+            message = "OK";
+        } catch (Exception e) {
+            message = "KO";
+        }
+        return message;
     }
 
     public Nota getSingleNote(Integer id) {
-        return noteService.getOne(id);
+        if (id != null) {
+            return noteService.getOne(id);
+        } else {
+            return new Nota();
+        }
     }
 
-    public void putNote(Nota nota) {
-        noteService.saveNota(nota);
+    public String putNote(Nota nota) {
+        String message = null;
+        try {
+            noteService.saveNota(nota);
+            message = "OK";
+        } catch (Exception e) {
+            message = "KO";
+        }
+        return message;
     }
 
-    public void deleteSingleNote(Integer id) {
-        noteService.delete(id);
+    public String deleteSingleNote(Integer id) {
+        String message = null;
+        try {
+            noteService.delete(id);
+            message = "OK";
+        } catch (Exception e) {
+            message = "KO";
+        }
+        return message;
     }
 
     public List<String> deleteMultipleNote(IDs dto) {
