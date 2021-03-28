@@ -92,7 +92,6 @@ public class WebNotesController extends UtilsClass {
 
     }
 
-    //TODO: Adding check on title note.
     @ApiOperation("Api che permette di modificare una determinata nota")
     @PutMapping("/notes/{id}")
     public ResponseEntity<String> putNote(
