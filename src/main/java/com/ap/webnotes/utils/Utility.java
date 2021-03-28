@@ -32,6 +32,6 @@ public class Utility {
      */
     public static boolean checkNotaExisistence(List<Nota> note, NotaDto noteToInsert) {
         return note != null && note.stream()
-                .allMatch(check -> check.getTitolo().contains(noteToInsert.getTitolo()));
+                .anyMatch(check -> check.getTitolo().contains(noteToInsert.getTitolo()));
     }
 }

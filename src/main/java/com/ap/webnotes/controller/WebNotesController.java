@@ -8,18 +8,17 @@ import com.ap.webnotes.factory.PutNoteFactory;
 import com.ap.webnotes.model.IDs;
 import com.ap.webnotes.model.Nota;
 import com.ap.webnotes.resource.NotaResource;
-import com.ap.webnotes.service.implementations.NoteServiceImpl;
 import com.ap.webnotes.utils.UtilsClass;
 import com.ap.webnotes.utils.enums.CodAzioneEnum;
 import com.ap.webnotes.utils.mocks.NoteMocks;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -93,12 +92,12 @@ public class WebNotesController extends UtilsClass {
 
     }
 
-
+    //TODO: Adding check on title note.
     @ApiOperation("Api che permette di modificare una determinata nota")
     @PutMapping("/notes/{id}")
     public ResponseEntity<String> putNote(
             @RequestBody NotaDto dto,
-            @PathVariable("id") Integer id,
+            @PathVariable("id") @Validated Integer id,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
     ) {
         if (Boolean.TRUE.equals(mock))

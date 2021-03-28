@@ -15,15 +15,19 @@ public class PutNoteFactory {
     private NoteCommand noteCommand;
 
     public Nota putNota(NotaDto dto, Integer id) {
-        Nota singleNote = noteCommand.getSingleNote(id);
-        LocalDateTime datInserimento = singleNote.getTmsInserimento();
-        return dto != null && id != null && datInserimento != null ?
+
+        return
                 new Nota()
                         .setId(id)
-                        .setTitolo(dto.getTitolo())
-                        .setContenuto(dto.getContenuto())
-                        .setTmsInserimento(datInserimento)
-                        .setTmsUltimoAggiornamento(LocalDateTime.now()) : new Nota();
+                        .setTitolo(dto.getTitolo() != null ? dto.getTitolo() : null)
+                        .setContenuto(dto.getContenuto() != null ? dto.getContenuto() : null)
+                        .setTmsInserimento(retrieveTms(id) != null ? retrieveTms(id) : null)
+                        .setTmsUltimoAggiornamento(LocalDateTime.now());
 
+    }
+
+    protected LocalDateTime retrieveTms(Integer id) {
+        Nota singleNote = noteCommand.getSingleNote(id);
+        return singleNote.getTmsInserimento();
     }
 }

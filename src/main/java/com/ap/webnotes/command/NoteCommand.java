@@ -1,11 +1,10 @@
 package com.ap.webnotes.command;
 
-import com.ap.webnotes.controller.WebNotesController;
 import com.ap.webnotes.dto.NotaDto;
 import com.ap.webnotes.model.IDs;
 import com.ap.webnotes.model.Nota;
 import com.ap.webnotes.service.implementations.NoteServiceImpl;
-import org.aspectj.weaver.ast.Not;
+import com.ap.webnotes.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,12 +22,15 @@ public class NoteCommand {
     }
 
     public String postNote(Nota nota, List<Nota> checkNotes, NotaDto dto) {
-        String message;
+        String message = null;
+        List<Nota> note = getNotes();
         try {
-            if (!WebNotesController.checkNotaExisistence(checkNotes, dto)) {
+            if (note.isEmpty() || !Utility.checkNotaExisistence(checkNotes, dto)) {
                 noteService.saveNota(nota);
+                message = "OK";
+            } else {
+                message = "Not Okay";
             }
-            message = "OK";
         } catch (Exception e) {
             message = "KO";
         }
