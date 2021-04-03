@@ -1,6 +1,6 @@
 package com.ap.webnotes.factory;
 
-import com.ap.webnotes.command.NoteCommand;
+import com.ap.webnotes.command.businesslogic.PutNoteBusinessLogic;
 import com.ap.webnotes.dto.NotaDto;
 import com.ap.webnotes.model.Nota;
 import com.ap.webnotes.utils.Utility;
@@ -14,28 +14,27 @@ import java.util.List;
 public class PutNoteFactory {
 
     @Autowired
-    private NoteCommand noteCommand;
+    private PutNoteBusinessLogic putNoteBusinessLogic;
 
     public Nota putNota(NotaDto dto, Integer id) {
+        List<Nota> checkNotes = putNoteBusinessLogic.retrieveNotes();
+        LocalDateTime retrieveTms = putNoteBusinessLogic.retrieveData(id);
 
-        List<Nota> checkNotes = noteCommand.getNotes();
-
-        if(!Utility.checkNotaExisistence(checkNotes, dto)){
-
-            return new Nota()
-                    .setId(id)
-                    .setTitolo(dto.getTitolo() != null ? dto.getTitolo() : null)
-                    .setContenuto(dto.getContenuto() != null ? dto.getContenuto() : null)
-                    .setTmsInserimento(retrieveTms(id) != null ? retrieveTms(id) : null)
-                    .setTmsUltimoAggiornamento(LocalDateTime.now());
-        }else {
+        if (dto != null && id != null && !checkNotes.isEmpty() && retrieveTms != null) {
+            if (!Utility.checkNotaExisistence(checkNotes, dto)) {
+                return new Nota()
+                        .setId(id)
+                        .setTitolo(dto.getTitolo() != null ? dto.getTitolo() : null)
+                        .setContenuto(dto.getContenuto() != null ? dto.getContenuto() : null)
+                        .setTmsInserimento(retrieveTms)
+                        .setTmsUltimoAggiornamento(LocalDateTime.now());
+            } else {
+                return new Nota();
+            }
+        } else {
             return null;
         }
 
     }
 
-    protected LocalDateTime retrieveTms(Integer id) {
-        Nota singleNote = noteCommand.getSingleNote(id);
-        return singleNote.getTmsInserimento();
-    }
 }

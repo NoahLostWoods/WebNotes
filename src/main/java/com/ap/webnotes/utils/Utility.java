@@ -18,7 +18,7 @@ public class Utility {
      */
     public static boolean checkUserExsistence(List<Users> checkUser, UserDto usersToInsert) {
 
-        return checkUser != null && checkUser.stream()
+        return !checkUser.isEmpty() && checkUser.stream()
                 .allMatch(check -> check.getUser().contains(usersToInsert.getUser()));
     }
 
@@ -31,7 +31,7 @@ public class Utility {
      * @return true if note exist or false if note not exist
      */
     public static boolean checkNotaExisistence(List<Nota> note, NotaDto noteToInsert) {
-        return note != null && note.stream()
+        return !note.isEmpty() && note.stream()
                 .anyMatch(check -> check.getTitolo().contains(noteToInsert.getTitolo()));
     }
 }

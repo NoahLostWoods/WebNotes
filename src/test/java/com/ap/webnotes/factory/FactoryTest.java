@@ -2,8 +2,13 @@ package com.ap.webnotes.factory;
 
 import com.ap.webnotes.dto.NotaDto;
 import com.ap.webnotes.dto.UserDto;
+import com.ap.webnotes.model.Nota;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 public class FactoryTest {
 
@@ -18,15 +23,12 @@ public class FactoryTest {
         Assert.assertNotNull(new PostUserFactory().dtoToModel(buildUserDto()));
     }
 
-    //TODO fix this jUnit
-    /*
     @Test
-    public void putNoteFactory(){
+    public void putNoteFactory() {
         Integer id = 5;
         Assert.assertNotNull(new PutNoteFactory().putNota(buildNotaDto(), id));
     }
 
-     */
 
     //Settings method
     private NotaDto buildNotaDto() {

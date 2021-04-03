@@ -2,6 +2,7 @@ package com.ap.webnotes.controller;
 
 import com.ap.webnotes.assembler.GetNoteAssembler;
 import com.ap.webnotes.command.NoteCommand;
+import com.ap.webnotes.command.businesslogic.PutNoteBusinessLogic;
 import com.ap.webnotes.dto.NotaDto;
 import com.ap.webnotes.factory.PostNoteFactory;
 import com.ap.webnotes.factory.PutNoteFactory;
@@ -12,13 +13,13 @@ import com.ap.webnotes.utils.UtilsClass;
 import com.ap.webnotes.utils.enums.CodAzioneEnum;
 import com.ap.webnotes.utils.mocks.NoteMocks;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -103,11 +104,12 @@ public class WebNotesController extends UtilsClass {
             logger.info("Fine chiamata servizio putNote mock -> {}", mock);
 
         logger.info("Inizio chiamata servizio putNote");
+
+        // put nota on database
         Nota nota = putNoteFactory.putNota(dto, id);
         String message = (noteCommand.putNote(nota));
         logger.info("Fine chiamata servizio putNote");
         return ResponseEntity.ok(message);
-
     }
 
     @ApiOperation("Api che permette di eliminate una determinata nota")
