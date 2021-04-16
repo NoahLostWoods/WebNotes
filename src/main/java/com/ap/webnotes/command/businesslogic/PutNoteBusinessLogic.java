@@ -14,9 +14,9 @@ public class PutNoteBusinessLogic {
     @Autowired
     private NoteCommand noteCommand;
 
-    public LocalDateTime retrieveData(Integer id) {
+    public LocalDateTime retrieveData(Integer id, Boolean flg) {
         if(id != null) {
-            return noteCommand.getSingleNote(id).getTmsInserimento();
+            return noteCommand.getSingleNote(id, flg).getTmsInserimento();
         }else {
             return null;
         }

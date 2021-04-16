@@ -37,8 +37,8 @@ public class NoteCommand {
         return message;
     }
 
-    public Nota getSingleNote(Integer id) {
-        if (id != null) {
+    public Nota getSingleNote(Integer id, Boolean flg) {
+        if (id != null && flg.equals(Boolean.TRUE)) {
             return noteService.getOne(id);
         } else {
             return new Nota();

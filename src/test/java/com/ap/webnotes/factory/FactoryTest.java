@@ -26,7 +26,8 @@ public class FactoryTest {
     @Test
     public void putNoteFactory() {
         Integer id = 5;
-        Assert.assertNotNull(new PutNoteFactory().putNota(buildNotaDto(), id));
+        Boolean flg = true;
+        Assert.assertNotNull(new PutNoteFactory().putNota(buildNotaDto(), id, flg));
     }
 
 

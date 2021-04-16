@@ -78,14 +78,15 @@ public class WebNotesController extends UtilsClass {
     @GetMapping("/notes/{id}")
     public ResponseEntity<NotaResource> getNota(
             @PathVariable("id") Integer id,
-            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
+            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock,
+            @RequestParam("flg") Boolean flg
     ) {
         if (Boolean.TRUE.equals(mock)) {
-            logger.info("Fine chiamata servizio getNota mock -> {}", mock);
+            logger.info("Fine chiamata servizio getNota mock -> {}, flg -> {}", mock, flg);
             return NoteMocks.getNotesMocks();
         }
         logger.info("Inizio chiamata servizio getNota");
-        Nota notaResult = noteCommand.getSingleNote(id);
+        Nota notaResult = noteCommand.getSingleNote(id, flg);
         GetNoteAssembler assembler = new GetNoteAssembler();
 
         logger.info("Fine chiamata servizio getNota");
@@ -98,7 +99,8 @@ public class WebNotesController extends UtilsClass {
     public ResponseEntity<String> putNote(
             @RequestBody NotaDto dto,
             @PathVariable("id") @Validated Integer id,
-            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock
+            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock,
+            @RequestParam("flg") Boolean flg
     ) {
         if (Boolean.TRUE.equals(mock))
             logger.info("Fine chiamata servizio putNote mock -> {}", mock);
@@ -106,7 +108,7 @@ public class WebNotesController extends UtilsClass {
         logger.info("Inizio chiamata servizio putNote");
 
         // put nota on database
-        Nota nota = putNoteFactory.putNota(dto, id);
+        Nota nota = putNoteFactory.putNota(dto, id, flg);
         String message = (noteCommand.putNote(nota));
         logger.info("Fine chiamata servizio putNote");
         return ResponseEntity.ok(message);

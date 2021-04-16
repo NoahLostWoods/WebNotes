@@ -16,9 +16,9 @@ public class PutNoteFactory {
     @Autowired
     private PutNoteBusinessLogic putNoteBusinessLogic;
 
-    public Nota putNota(NotaDto dto, Integer id) {
+    public Nota putNota(NotaDto dto, Integer id, Boolean flg) {
         List<Nota> checkNotes = putNoteBusinessLogic.retrieveNotes();
-        LocalDateTime retrieveTms = putNoteBusinessLogic.retrieveData(id);
+        LocalDateTime retrieveTms = putNoteBusinessLogic.retrieveData(id, flg);
 
         if (dto != null && id != null && !checkNotes.isEmpty() && retrieveTms != null) {
             if (!Utility.checkNotaExisistence(checkNotes, dto)) {
