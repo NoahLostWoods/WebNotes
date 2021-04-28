@@ -21,11 +21,11 @@ public class NoteCommand {
         return noteService.getAll();
     }
 
-    public String postNote(Nota nota, List<Nota> checkNotes, NotaDto dto) {
+    public String postNote(Nota nota, NotaDto dto) {
         String message = null;
         List<Nota> note = getNotes();
         try {
-            if (note.isEmpty() || !Utility.checkNotaExisistence(checkNotes, dto)) {
+            if (!Utility.checkNotaExisistence(note, dto)) {
                 noteService.saveNota(nota);
                 message = "OK";
             } else {

@@ -65,9 +65,8 @@ public class WebNotesController extends UtilsClass {
             return ResponseEntity.ok("OK");
         }
         logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
-        List<Nota> checkNotes = noteCommand.getNotes();
         Nota nota = postNoteFactory.postNota(dto);
-        String message = noteCommand.postNote(nota, checkNotes, dto);
+        String message = noteCommand.postNote(nota, dto);
 
         logger.info("Fine chiamata servizio postNota");
         return ResponseEntity.ok(message);
