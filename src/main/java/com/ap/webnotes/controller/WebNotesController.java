@@ -1,5 +1,6 @@
 package com.ap.webnotes.controller;
 
+import com.ap.webnotes.assembler.GetNotaAssembler;
 import com.ap.webnotes.assembler.GetNoteAssembler;
 import com.ap.webnotes.command.NoteCommand;
 import com.ap.webnotes.command.businesslogic.PutNoteBusinessLogic;
@@ -54,7 +55,7 @@ public class WebNotesController extends UtilsClass {
     }
 
     @ApiOperation("Api che permette di inserire una nota")
-    @PostMapping("/notes")
+    @PostMapping("/note")
     public ResponseEntity<String> postNota(
             @RequestParam("codAzione") CodAzioneEnum codAzione,
             @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock,
@@ -86,7 +87,7 @@ public class WebNotesController extends UtilsClass {
         }
         logger.info("Inizio chiamata servizio getNota");
         Nota notaResult = noteCommand.getSingleNote(id, flg);
-        GetNoteAssembler assembler = new GetNoteAssembler();
+        GetNotaAssembler assembler = new GetNotaAssembler();
 
         logger.info("Fine chiamata servizio getNota");
         return ResponseEntity.ok(assembler.toResource(notaResult));
