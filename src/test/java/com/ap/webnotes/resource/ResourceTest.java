@@ -1,6 +1,8 @@
 package com.ap.webnotes.resource;
 
-import com.ap.webnotes.resource.pojo.NotaPojo;
+import com.ap.webnotes.resource.notes.NotaResource;
+import com.ap.webnotes.resource.notes.pojo.NotaPojo;
+import com.ap.webnotes.resource.users.UsersResource;
 import org.junit.Test;
 
 import java.time.LocalDateTime;

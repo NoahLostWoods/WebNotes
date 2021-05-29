@@ -1,8 +1,8 @@
 package com.ap.webnotes.utils.mocks;
 
-import com.ap.webnotes.model.Nota;
-import com.ap.webnotes.resource.NotaResource;
-import com.ap.webnotes.resource.pojo.NotaPojo;
+import com.ap.webnotes.model.notes.Nota;
+import com.ap.webnotes.resource.notes.NotaResource;
+import com.ap.webnotes.resource.notes.pojo.NotaPojo;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;

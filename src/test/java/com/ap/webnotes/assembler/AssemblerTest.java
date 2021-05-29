@@ -1,7 +1,11 @@
 package com.ap.webnotes.assembler;
 
-import com.ap.webnotes.model.Nota;
-import com.ap.webnotes.model.Users;
+import com.ap.webnotes.assembler.notes.GetNotaAssembler;
+import com.ap.webnotes.assembler.notes.GetNoteAssembler;
+import com.ap.webnotes.assembler.users.GetUserAssembler;
+import com.ap.webnotes.assembler.users.GetUsersAssembler;
+import com.ap.webnotes.model.notes.Nota;
+import com.ap.webnotes.model.users.Users;
 import org.junit.Assert;
 import org.junit.Test;
 

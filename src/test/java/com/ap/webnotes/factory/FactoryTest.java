@@ -1,14 +1,12 @@
 package com.ap.webnotes.factory;
 
-import com.ap.webnotes.dto.NotaDto;
-import com.ap.webnotes.dto.UserDto;
-import com.ap.webnotes.model.Nota;
+import com.ap.webnotes.dto.notes.NotaDto;
+import com.ap.webnotes.dto.users.UserDto;
+import com.ap.webnotes.factory.notes.PostNoteFactory;
+import com.ap.webnotes.factory.notes.PutNoteFactory;
+import com.ap.webnotes.factory.users.PostUserFactory;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 public class FactoryTest {
 

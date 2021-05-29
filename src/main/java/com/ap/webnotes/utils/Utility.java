@@ -1,9 +1,9 @@
 package com.ap.webnotes.utils;
 
-import com.ap.webnotes.dto.NotaDto;
-import com.ap.webnotes.dto.UserDto;
-import com.ap.webnotes.model.Nota;
-import com.ap.webnotes.model.Users;
+import com.ap.webnotes.dto.notes.NotaDto;
+import com.ap.webnotes.dto.users.UserDto;
+import com.ap.webnotes.model.notes.Nota;
+import com.ap.webnotes.model.users.Users;
 
 import java.util.List;
 

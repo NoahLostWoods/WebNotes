@@ -1,6 +1,6 @@
 package com.ap.webnotes.utils.mocks;
 
-import com.ap.webnotes.resource.UsersResource;
+import com.ap.webnotes.resource.users.UsersResource;
 
 import java.util.Arrays;
 import java.util.List;

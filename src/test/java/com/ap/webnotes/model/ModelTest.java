@@ -1,11 +1,12 @@
 package com.ap.webnotes.model;
 
+import com.ap.webnotes.model.notes.Nota;
+import com.ap.webnotes.model.users.Users;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
 
 public class ModelTest {
 
