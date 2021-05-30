@@ -1,6 +1,7 @@
 package com.ap.webnotes.command.businesslogic.notes;
 
-import com.ap.webnotes.command.notes.NoteCommand;
+import com.ap.webnotes.command.notes.GetNotaCommand;
+import com.ap.webnotes.command.notes.GetNoteCommand;
 import com.ap.webnotes.model.notes.Nota;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,13 @@ import java.util.List;
 public class PutNoteBusinessLogic {
 
     @Autowired
-    private NoteCommand noteCommand;
+    private GetNoteCommand noteCommand;
+    @Autowired
+    private GetNotaCommand getNotaCommand;
 
     public LocalDateTime retrieveData(Integer id, Boolean flg) {
         if(id != null) {
-            return noteCommand.getSingleNote(id, flg).getTmsInserimento();
+            return getNotaCommand.getNota(id, flg).getTmsInserimento();
         }else {
             return null;
         }

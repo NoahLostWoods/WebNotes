@@ -2,7 +2,7 @@ package com.ap.webnotes.controller.notes;
 
 import com.ap.webnotes.assembler.notes.GetNotaAssembler;
 import com.ap.webnotes.assembler.notes.GetNoteAssembler;
-import com.ap.webnotes.command.notes.NoteCommand;
+import com.ap.webnotes.command.notes.*;
 import com.ap.webnotes.dto.notes.NotaDto;
 import com.ap.webnotes.factory.notes.PostNoteFactory;
 import com.ap.webnotes.factory.notes.PutNoteFactory;
@@ -25,9 +25,18 @@ import java.util.List;
 @RequestMapping(value = "/web/notes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WebNotesController extends UtilsClass {
 
-
     @Autowired
-    private NoteCommand noteCommand;
+    private GetNoteCommand noteCommand;
+    @Autowired
+    private PostNotaCommand postNotaCommand;
+    @Autowired
+    private GetNotaCommand getNotaCommand;
+    @Autowired
+    private PutNoteCommand putNoteCommand;
+    @Autowired
+    private DeleteNotaCommand deleteNotaCommand;
+    @Autowired
+    private DeleteNoteCommand deleteNoteCommand;
     @Autowired
     private PostNoteFactory postNoteFactory;
     @Autowired
@@ -65,7 +74,7 @@ public class WebNotesController extends UtilsClass {
         }
         logger.info("Inizio chiamata servizio postNota, codAzione -> {}", codAzione);
         Nota nota = postNoteFactory.postNota(dto);
-        String message = noteCommand.postNote(nota, dto);
+        String message = postNotaCommand.postNote(nota, dto);
 
         logger.info("Fine chiamata servizio postNota");
         return ResponseEntity.ok(message);
@@ -84,7 +93,7 @@ public class WebNotesController extends UtilsClass {
             return NoteMocks.getNotesMocks();
         }
         logger.info("Inizio chiamata servizio getNota");
-        Nota notaResult = noteCommand.getSingleNote(id, flg);
+        Nota notaResult = getNotaCommand.getNota(id, flg);
         GetNotaAssembler assembler = new GetNotaAssembler();
 
         logger.info("Fine chiamata servizio getNota");
@@ -107,7 +116,7 @@ public class WebNotesController extends UtilsClass {
 
         // put nota on database
         Nota nota = putNoteFactory.putNota(dto, id, flg);
-        String message = (noteCommand.putNote(nota));
+        String message = putNoteCommand.putNota(nota);
         logger.info("Fine chiamata servizio putNote");
         return ResponseEntity.ok(message);
     }
@@ -123,7 +132,7 @@ public class WebNotesController extends UtilsClass {
 
         logger.info("Inizio chiamata servizio deleteNota");
 
-        String message = noteCommand.deleteSingleNote(id);
+        String message = deleteNotaCommand.deleteNota(id);
 
         logger.info("Fine chiamata servizio deleteNota");
         return ResponseEntity.ok(message);
@@ -140,7 +149,7 @@ public class WebNotesController extends UtilsClass {
             logger.info("Fine chiamata servizio deleteNotes mock -> {}", mock);
 
         logger.info("Inizio chiamata al servizio deleteNotes");
-        List<String> message = noteCommand.deleteMultipleNote(dto);
+        List<String> message = deleteNoteCommand.deleteNotes(dto);
         logger.info("Fine chiamata al servizio deleteNotes");
         return ResponseEntity.ok(message);
     }
