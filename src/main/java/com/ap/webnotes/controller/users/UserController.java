@@ -24,9 +24,8 @@ public class UserController extends UtilsClass {
 
     /*
     TODO
-     1) Aggiungere la ricerca per nominativo.
-     2) Aggiungere la delete per id.
-     3) Aggiungere la modifica della username [Check -> se la user è stata già presa o meno].
+     1) Aggiungere la delete per id.
+     2) Aggiungere la modifica della username [Check -> se la user è stata già presa o meno].
      */
 
     @Autowired
@@ -99,6 +98,24 @@ public class UserController extends UtilsClass {
         GetUserAssembler assembler = new GetUserAssembler();
 
         logger.info("Fine servizio getUser");
+        return ResponseEntity.ok(assembler.toResource(user));
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<UsersResource> getUserFromName(
+            @RequestParam(required = false, defaultValue = "false") Boolean mock,
+            @RequestParam("nominativo") String nominativo
+    ){
+        if(Boolean.TRUE.equals(mock)){
+            logger.info("Fine chiamata servizio getUserByName mock -> {}", mock);
+            return ResponseEntity.ok(UserMockModels.getUser());
+        }
+
+        Users user = userCommand.getUserByName(nominativo);
+
+        GetUserAssembler assembler = new GetUserAssembler();
+
+        logger.info("Fine servizio getUserByName");
         return ResponseEntity.ok(assembler.toResource(user));
     }
 

@@ -4,6 +4,7 @@ import com.ap.webnotes.model.users.Users;
 import com.ap.webnotes.service.users.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import utils.ListUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,5 +39,22 @@ public class UserCommand {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Users getUserByName(String name){
+        ListUtils utils = new ListUtils();
+        List<Users> users = getUsers();
+        if(utils.isNotEmpty(users)){
+            for (Users us : users){
+                if(us.getUser() != null && us.getUser().equals(name)){
+                    return new Users()
+                            .setId(us.getId())
+                            .setUser(us.getUser())
+                            .setPassword("N/A")
+                            .setTmsRegistered(us.getTmsRegistered());
+                }
+            }
+        }
+        return new Users();
     }
 }
