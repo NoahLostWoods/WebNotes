@@ -22,6 +22,13 @@ import java.util.function.Supplier;
 @RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController extends UtilsClass {
 
+    /*
+    TODO
+     1) Aggiungere la ricerca per nominativo.
+     2) Aggiungere la delete per id.
+     3) Aggiungere la modifica della username [Check -> se la user è stata già presa o meno].
+     */
+
     @Autowired
     private UserCommand userCommand;
 
