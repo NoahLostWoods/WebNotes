@@ -57,4 +57,19 @@ public class UserCommand {
         }
         return new Users();
     }
+
+    public String deleteById(Integer id) {
+        Boolean flg = false;
+        try {
+            userService.deleteUser(id);
+            flg = true;
+        }catch (Exception e){
+            flg = false;
+        }
+        if (flg) {
+            return "OK";
+        }else {
+            return "KO";
+        }
+    }
 }
