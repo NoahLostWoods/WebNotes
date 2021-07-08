@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/web/notes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/webNotes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WebNotesController extends UtilsClass {
 
     @Autowired
