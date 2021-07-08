@@ -8,6 +8,7 @@ public class UsersResource {
     private String user;
     private String password;
     private LocalDateTime tmsRegistered;
+    private LocalDateTime tmsLastUpdate;
 
     public Integer getId() {
         return id;
@@ -42,6 +43,15 @@ public class UsersResource {
 
     public UsersResource setTmsRegistered(LocalDateTime tmsRegistered) {
         this.tmsRegistered = tmsRegistered;
+        return this;
+    }
+
+    public LocalDateTime getTmsLastUpdate() {
+        return tmsLastUpdate;
+    }
+
+    public UsersResource setTmsLastUpdate(LocalDateTime tmsLastUpdate) {
+        this.tmsLastUpdate = tmsLastUpdate;
         return this;
     }
 }

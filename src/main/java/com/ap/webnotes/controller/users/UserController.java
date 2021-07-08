@@ -3,8 +3,10 @@ package com.ap.webnotes.controller.users;
 import com.ap.webnotes.assembler.users.GetUserAssembler;
 import com.ap.webnotes.assembler.users.GetUsersAssembler;
 import com.ap.webnotes.command.users.UserCommand;
+import com.ap.webnotes.dto.users.PutUserDto;
 import com.ap.webnotes.dto.users.UserDto;
 import com.ap.webnotes.factory.users.PostUserFactory;
+import com.ap.webnotes.factory.users.PutUserFactory;
 import com.ap.webnotes.model.users.Users;
 import com.ap.webnotes.resource.users.UsersResource;
 import com.ap.webnotes.utils.UtilsClass;
@@ -32,6 +34,9 @@ public class UserController extends UtilsClass {
 
     @Autowired
     private PostUserFactory postUserFactory;
+
+    @Autowired
+    private PutUserFactory putUserFactory;
 
     @GetMapping("/users")
     public ResponseEntity<List<UsersResource>> getUsers(
@@ -132,6 +137,28 @@ public class UserController extends UtilsClass {
         String message = userCommand.deleteById(id);
 
         logger.info("Fine servizio deleteById id -> {}", id);
+        return ResponseEntity.ok(message);
+
+    }
+
+    @PutMapping("/user/{id}")
+    public ResponseEntity<String> modificaUser(
+            @PathVariable("id") Integer id,
+            @RequestParam(value = "mock", required = false, defaultValue = "false") Boolean mock,
+            @RequestBody PutUserDto putUserDto
+            ){
+
+        if(Boolean.TRUE.equals(mock)){
+            logger.info("Fine chiamata servizio modificaUser mock -> {}", true);
+            return ResponseEntity.ok("OK MOCKED");
+        }
+
+        logger.info("Inizio servizio modifica user id -> {}", id);
+
+        Users user = putUserFactory.dtoToModel(putUserDto, id);
+
+        String message = userCommand.putUser(user);
+
         return ResponseEntity.ok(message);
 
     }

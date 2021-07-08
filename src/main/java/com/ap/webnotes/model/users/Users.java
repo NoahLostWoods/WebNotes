@@ -14,6 +14,7 @@ public class Users {
     private String user;
     private String password;
     private LocalDateTime tmsRegistered;
+    private LocalDateTime tmsLastRegistered;
 
     public Integer getId() {
         return id;
@@ -48,6 +49,15 @@ public class Users {
 
     public Users setTmsRegistered(LocalDateTime tmsRegistered) {
         this.tmsRegistered = tmsRegistered;
+        return this;
+    }
+
+    public LocalDateTime getTmsLastRegistered() {
+        return tmsLastRegistered;
+    }
+
+    public Users setTmsLastRegistered(LocalDateTime tmsLastRegistered) {
+        this.tmsLastRegistered = tmsLastRegistered;
         return this;
     }
 }

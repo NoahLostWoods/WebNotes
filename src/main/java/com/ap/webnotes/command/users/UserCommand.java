@@ -8,6 +8,7 @@ import utils.ListUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Component
 public class UserCommand {
@@ -67,6 +68,28 @@ public class UserCommand {
             flg = false;
         }
         if (flg) {
+            return "OK";
+        }else {
+            return "KO";
+        }
+    }
+
+    public String putUser(Users users){
+        Boolean flg = false;
+        try{
+            List<Users> checkUsers = userService.getAllUsers();
+            Boolean match = checkUsers.stream().allMatch(a -> a.getUser().equals(users.getUser()));
+            if (match){
+                flg = false;
+            }else{
+                userService.saveUser(users);
+                flg = true;
+            }
+        }catch (Exception e){
+            flg = false;
+        }
+
+        if(flg){
             return "OK";
         }else {
             return "KO";
