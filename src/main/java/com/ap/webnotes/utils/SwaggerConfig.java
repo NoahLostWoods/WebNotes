@@ -1,4 +1,4 @@
-package utils;
+package com.ap.webnotes.utils;
 
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
