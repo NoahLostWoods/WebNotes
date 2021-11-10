@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://trav0027.ddns.net:3306/webnotes?serverTimezone=UTC
+    url: jdbc:mysql://trav35690027.ddns.net:3306/webnotes?serverTimezone=UTC
     username: monty
     password: password
     testWhileIdle: true
