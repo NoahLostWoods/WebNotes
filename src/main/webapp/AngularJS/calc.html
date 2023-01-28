@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CALCOLATRICE</title>
+</head>
+<body>
+	<div ng-controller="calculatorController">
+		<div>
+			<h1>SOMMA</h1>
+			<input type="number" ng-model="num1" placeholder="Numero 1"/>+
+		    <input type="number" ng-model="num2" placeholder="Numero 2"/>=
+		    <input type="number" ng-model="risultato" placeholder="Risultato" ng-disabled="true"/>
+		    <button ng-click="risultato = getSomma(num1, num2, $event)" ng-disabled="getDisabled(num1, num2)">Somma</button>
+		</div>
+		<br>
+		<div>
+			<h1>SOTTRAZIONE</h1>
+			<input type="number" ng-model="numSub1" placeholder="Numero 1"/>-
+		    <input type="number" ng-model="numSub2" placeholder="Numero 2"/>=
+		    <input type="number" ng-model="risultatoSub" placeholder="Risultato" ng-disabled="true"/>
+		    <button ng-click="risultatoSub = getSub(numSub1, numSub2)" ng-disabled="getDisabled(numSub1, numSub2)">Sottrai</button>
+		</div>
+		<br>
+		<div>
+			<h1>DIVISIONE</h1>
+			<input type="number" ng-model="numDiv1" placeholder="Numero 1"/>/
+		    <input type="number" ng-model="numDiv2" placeholder="Numero 2"/>=
+		    <input type="number" ng-model="risultatoDiv" placeholder="Risultato" ng-disabled="true"/>
+		    <button ng-click="risultatoDiv = getDiv(numDiv1, numDiv2)" ng-disabled="getDisabled(numDiv1, numDiv2)">Dividi</button>
+		</div>
+		<br>
+		<div>
+			<h1>MOLTIPLICAZIONE</h1>
+			<input type="text" ng-model="numMol1" placeholder="Numero 1"/>*
+		    <input type="text" ng-model="numMol2" placeholder="Numero 2"/>=
+		    <input type="text" ng-model="risultatoMol" placeholder="Risultato" ng-disabled="true"/>
+		    <button ng-click="risultatoMol = getMol(numMol1, numMol2)" ng-disabled="getDisabled(numMol1, numMol2)">Moltiplica</button>
+		</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div ng-controller="cittaController">
+		<p>Città: <input type="text" ng-model="nome"/></p>
+		<p>Regione: <input type="text" ng-model="regione"/></p>
+		<p><button ng-click="aggiungiCitta()" ng-disabled="checkUndefinedCity(nome, regione)">Aggiungi</button></p>
+	</div>
+	<div ng-controller="elencoController">
+		<ul>
+			<li ng-repeat="citta in elencoCitta">{{citta.nome}}</li>
+		</ul>
+		
+	</div>
+</body>
+</html>
