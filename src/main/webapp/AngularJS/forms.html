@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Forms excercise</title>
+</head>
+<body>
+	<div ng-controller="greetingsController">
+		<style type="text/css">
+			.rosso{color:red}
+			.verde{color:green}
+			.blu{color:blue}
+			.normale{font-style:normal}
+			.grassetto{font-weight:bold}
+			.corsivo{font-style:italic}
+		</style>
+		<p><input type="text" ng-model="name" placeholder="Nome completo" id="lname"></p>
+		<p><input type="text" ng-model="surname" placeholder="Cognome completo" id="lsurname"></p>
+		<p><input type="text" ng-model="colore" placeholder="Colore"></p>
+		<p><input type="text" ng-model="stile" placeholder="Stile"></p>
+		<p><input type="text" ng-model="eta" placeholder="età"></p>
+		<p ng-class="[colore, stile]">{{nameAndSurname(name, surname)}}</p>
+		<p ng-class="getFormatt(eta), stile" ng-include="caricaDoc(eta)"></p>
+	</div>
+</body>
+</html>
