@@ -179,10 +179,10 @@ angular.module("myApp", [])
         	headers: {"Authorization":"Bearer Ahiaeffajw245252=="}
         	})
         	.success(function(){
-        	console.log("Api DELETE richiamata");
+        	console.log("Api DELETE with single note richiamata");
         	})
         	.error(function(){
-        	console.log("Api DELETE in errore.")})
+        	console.log("Api DELETE with single note in errore.")})
     	};
 
     	$scope.eliminaNote = function(id){
