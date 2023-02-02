@@ -151,8 +151,14 @@ angular.module("myApp", [])
 		return data;
 		}
 		$scope.getHeader = function(){
-		var headerKeys = Object.keys(data.listaNoteResource[0]);
-		return headerKeys;
+		if(data.listaNoteResource.length > 0){
+		    var headerKeys = Object.keys(data.listaNoteResource[0]);
+		    return headerKeys;
+		}else{
+		return null;
+		}
+
+
 		}
 	})
 	.error(function(){
@@ -179,9 +185,11 @@ angular.module("myApp", [])
         	headers: {"Authorization":"Bearer Ahiaeffajw245252=="}
         	})
         	.success(function(){
+        	$scope.reload();
         	console.log("Api DELETE with single note richiamata");
         	})
         	.error(function(){
+        	$scope.reload();
         	console.log("Api DELETE with single note in errore.")})
     	};
 
@@ -196,6 +204,10 @@ angular.module("myApp", [])
                 	.error(function(){
                 	console.log("Api DELETE in errore.")})
             	};
+
+        $scope.reload = function(){
+           	location.reload();
+        	}
 
 
 });

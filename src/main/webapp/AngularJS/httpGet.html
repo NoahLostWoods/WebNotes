@@ -38,13 +38,14 @@ tr:nth-child(even) {
 </head>
 <body>
 	<div ng-controller="elencoNoteController">
-		<h3>LISTA NOTE</h3>
+		<h3><p align = "center">LISTA NOTE</p></h3>
 		<div>
 		<ul>
-			<li ng-repeat="nota in getSuccess().listaNoteResource">{{nota.titolo}} - {{nota.contenuto}}</li>
+			<li ng-repeat="nota in getDatas().listaNoteResource">{{nota.titolo}} - {{nota.contenuto}}</li>
 		</ul>
 		</div>
-		<div>
+
+		<div ng-hide = "getHeader() == null">
 		<table>
 			<tr>
 				<th></th>
@@ -67,6 +68,7 @@ tr:nth-child(even) {
 		</table>
 			<td><button class="btn" ng-click="eliminaNote(nota.id)"><i class="fa fa-trash"></i>Elimina</button></td>
 		</div>
+		<p align = "center" ng-show="getHeader() == null">Lista vuota</p>
 	</div>
 </body>
 </html>
