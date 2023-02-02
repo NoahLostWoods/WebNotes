@@ -9,7 +9,7 @@ angular.module("myApp", [])
 })
 .controller("principleController",
 	function($scope){
-		$scope.exercise = [{nome: "Esercizio delle forms"}, {nome: "Esercizio della calcolatrice"}, {nome: "Esercizio service e factory"}, {nome: "HTTPGET"}];
+		$scope.exercise = [{nome: "Esercizio delle forms"}, {nome: "Esercizio della calcolatrice"}, {nome: "Esercizio service e factory"}, {nome: "HTTPGET"}, {nome: "HTTPOST"}];
 		$scope.caricaPage = function(esercizio) {
 			if(esercizio != undefined && esercizio.includes("0")){
 				return "forms.html";
@@ -19,6 +19,8 @@ angular.module("myApp", [])
 				return "servFact.html";
 			}else if(esercizio != undefined && esercizio.includes("3")){
 				return "httpGet.html";
+			}else if(esercizio != undefined && esercizio.includes("4")){
+			    return "httpPost.html";
 			}
 		};
 
@@ -144,13 +146,57 @@ angular.module("myApp", [])
 		headers: {"Authorization":"Bearer Ahiaeffajw245252=="}
 	})
 	.success(function(data){
-		alert("Andato tutto bene");
-		$scope.getSuccess = function(){
+		console.log("Api GET richiamata");
+		$scope.getDatas = function(){
 		return data;
+		}
+		$scope.getHeader = function(){
+		var headerKeys = Object.keys(data.listaNoteResource[0]);
+		return headerKeys;
 		}
 	})
 	.error(function(){
-		alert("Errore");
+		console.log("Errore");
 	});
+
+	$scope.aggiungiNotaWebNotes = function(tit, cont, mockInput){
+	var dto = {"titolo": tit, "contenuto": cont};
+	var uri = "/webNotes/note"
+	$http.post(uri,dto, {
+	    params: {"codAzione": "INSERISCI", "mock": mockInput == undefined || mockInput != "true" ? false : true},
+    	headers: {"Authorization":"Bearer Ahiaeffajw245252=="}
+    	})
+    	.success(function(){
+    	console.log("Api POST richiamata");
+    	})
+    	.error(function(){
+    	console.log("Api POST in errore.")})
+	};
+
+	$scope.eliminaNota = function(id){
+    	var uri = "/webNotes/notes/"+id;
+    	$http.delete(uri, {
+        	headers: {"Authorization":"Bearer Ahiaeffajw245252=="}
+        	})
+        	.success(function(){
+        	console.log("Api DELETE richiamata");
+        	})
+        	.error(function(){
+        	console.log("Api DELETE in errore.")})
+    	};
+
+    	$scope.eliminaNote = function(id){
+            	var uri = "/webNotes/notes";
+            	$http.delete(uri, {
+                	headers: {"Authorization":"Bearer Ahiaeffajw245252=="}
+                	})
+                	.success(function(){
+                	console.log("Api DELETE richiamata");
+                	})
+                	.error(function(){
+                	console.log("Api DELETE in errore.")})
+            	};
+
+
 });
 
