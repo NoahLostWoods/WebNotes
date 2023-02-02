@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<div ng-controller="elencoNoteController">
+		<p>Titolo: <input type="text" ng-model="titolo"/></p>
+		<p>Contenuto: <input type="text" ng-model="contenuto"/></p>
+		<p>Mock: </p><select ng-model="selectMock">
+			<option>true</option>
+			<option>false</option>
+		</select>
+		<p><button ng-click="aggiungiNotaWebNotes(titolo, contenuto, selectMock)" ng-disabled="checkUndefinedCity(nome, regione)">Aggiungi</button></p>
+	</div>
+</body>
+</html>
